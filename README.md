@@ -16,6 +16,20 @@ npm run build      # typecheck + static export into out/
 npm run lint
 ```
 
+## Local development in OurStudio
+
+The repo carries `studio-site.json`, the manifest the Studio's **SITES** rail mode reads (it scans
+`~/Git` for manifests every 30 s; no registration step). Two launch modes, ports pinned so the
+family's sites never collide (jk 3100/3101, ink 3200/3201, loe 3300/3301, this site 3400/3401):
+
+| mode | what runs | frame |
+|---|---|---|
+| **static** (the development mode here) | `npm run build`, then `npx serve out -l 3401` — the export served with clean URLs and byte ranges, exactly what Netlify serves | `http://localhost:3401/` |
+| dev | `npx next dev -p 3400` — hot reload while editing a page | `http://localhost:3400/` |
+
+Start, stop and restart from the SITES page; the build log and the framed site are there. Nothing
+else should listen on 3400 or 3401. `serve` is a devDependency so `npx serve` resolves offline.
+
 ## Netlify — creating the project (once)
 
 1. Netlify → **Add new project → Import an existing project → GitHub** → pick

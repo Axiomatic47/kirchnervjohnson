@@ -1,0 +1,41 @@
+{
+  "$comment": "Read by the OurStudio SITES preview mode (spec: agent_notes/studio-spec/20260914_sites_preview_mode_spec.md; contract agreed website-developer f28bb754 <-> studio-spec a62261ad, 2026-09-15). The Studio launches `dev` or `static` from this repo root and frames http://localhost:<port><ready_path> once it answers 200. Ports are pinned so the sites never collide: jk 3100/3101, ink 3200/3201, loe 3300/3301, kirchnervjohnson 3400/3401.",
+  "name": "kirchnervjohnson.com",
+  "dev": {
+    "argv": [
+      "npx",
+      "next",
+      "dev",
+      "-p",
+      "3400"
+    ],
+    "port": 3400,
+    "ready_path": "/"
+  },
+  "static": {
+    "build_argv": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "serve_argv": [
+      "npx",
+      "serve",
+      "out",
+      "-l",
+      "3401",
+      "--no-clipboard"
+    ],
+    "port": 3401,
+    "ready_path": "/"
+  },
+  "env": {
+    "BROWSER": "none",
+    "NEXT_TELEMETRY_DISABLED": "1"
+  },
+  "notes": "Static Next export (output: 'export'), the same shape as kirchner.ink. STATIC is the mode for local development here: `npm run build` typechecks and exports into out/, then `serve` (a devDependency, so npx resolves it offline) serves out/ on 3401 with clean URLs and byte ranges (the PDF viewers of the review architecture range-load). Under construction: one page, robots disallow-all and noindex until launch. No env file, no backend, nothing Netlify-only yet; the SAMEORIGIN/CSP headers in netlify.toml apply only on Netlify. `pages` (read by the Studio's DEVICES run): nothing excluded yet, nothing heavy yet.",
+  "pages": {
+    "exclude": [],
+    "heavy": []
+  }
+}
