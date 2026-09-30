@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Light — navy & brass on stone paper (the family palette of kirchner.ink) */
+:root {
+  color-scheme: light;
+  --c-ink: 27 37 64;
+  --c-ink-2: 38 51 82;
+  --c-paper: 244 241 234;
+  --c-card: 251 250 246;
+  --c-well: 233 228 216;
+  --c-rule: 216 210 196;
+  --c-muted: 95 102 115;
+  --c-accent: 176 141 87;
+  --c-accent-ink: 138 107 58;
+  --c-on-ink: 244 241 234;
+  --shadow-card: 0 1px 2px rgba(27,37,64,0.06), 0 8px 24px -12px rgba(27,37,64,0.18);
+}
+/* Dark — the same brass on deep navy-black; text warms to old paper */
+.dark {
+  color-scheme: dark;
+  --c-ink: 231 226 216;
+  --c-ink-2: 214 208 196;
+  --c-paper: 17 21 29;
+  --c-card: 26 32 42;
+  --c-well: 11 14 20;
+  --c-rule: 44 52 66;
+  --c-muted: 154 163 178;
+  --c-accent: 194 157 99;
+  --c-accent-ink: 212 176 122;
+  --c-on-ink: 17 21 29;
+  --shadow-card: 0 1px 2px rgba(0,0,0,0.4), 0 8px 24px -12px rgba(0,0,0,0.6);
+}
+html { -webkit-text-size-adjust: 100%; text-rendering: optimizeLegibility; }
+body { @apply bg-paper text-ink font-sans antialiased; }
+a { @apply underline-offset-[3px]; }

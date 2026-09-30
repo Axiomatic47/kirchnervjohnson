@@ -1,0 +1,31 @@
+# netlify.toml — kirchnervjohnson.com (static Next.js export).
+# Netlify builds `main` on push; that push is the production deploy.
+
+[build]
+  command = "npm run build"
+  publish = "out"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+[[headers]]
+  for = "/*"
+    [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'self'; base-uri 'self'; form-action 'self'"
+
+[[headers]]
+  for = "/_next/static/*"
+    [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Canonical host: apex. www → apex.
+[[redirects]]
+  from = "https://www.kirchnervjohnson.com/*"
+  to = "https://kirchnervjohnson.com/:splat"
+  status = 301
+  force = true
