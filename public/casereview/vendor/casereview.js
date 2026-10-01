@@ -533,7 +533,7 @@ function refocus(id) { const el = $('#crNavList').querySelector(`.cr-row[data-id
 async function openLeft(id, opts = {}) {
   const doc = st.byId.get(id);
   if (!doc) { setStatus(`${id} is not in the registry`); return; }
-  { const away = publishedAway(doc); if (away) { setStatus(away.parts.map((p) => p.text).join('')); return; } }
+  { const away = publishedAway(doc, 'left'); if (away) { setStatus(away.parts.map((p) => p.text).join('')); return; } }
   st.left.id = id; st.left.doc = doc; st.left.links = null; st.left.units = null; st.active = null; st.left.problems = []; st.left.coverage = []; st.left.coverageAnswered = [];
   { const el = $('#crLeftTitle'); el.textContent = nameOf(doc); el.title = nameOf(doc); }
   st.left.here = [];

@@ -1691,13 +1691,14 @@ export function targetPages(t, doc) {
  *  row kept): the words instead of a fetch that 404s. The Studio ignores the
  *  field and its rows carry paths, so the test is BOTH — no path AND a
  *  publish value other than serve. → null (open it) | { kind, parts }. */
-export function publishedAway(doc) {
+export function publishedAway(doc, side = 'right') {
   if (!doc || (doc.path != null && doc.path !== '') || !doc.publish || doc.publish === 'serve') return null;
+  const pane = side === 'left' ? 'the review pane' : 'the reference pane';   // each footer names its OWN pane (f28bb754's nit, 2026-10-01)
   const label = doc.label || doc.id;
   if (doc.publish === 'link' && /^https?:\/\//i.test(doc.publish_url || '')) {
     return { kind: 'link', parts: [{ text: `${label}: not hosted on this site; at ` }, { text: doc.publish_url, href: doc.publish_url }, { text: ' (opens in the browser).' }] };
   }
-  return { kind: 'dead', parts: [{ text: `${label}: not published on this site yet. Nothing opened; the reference pane is as it was.` }] };
+  return { kind: 'dead', parts: [{ text: `${label}: not published on this site yet. Nothing opened; ${pane} is as it was.` }] };
 }
 
 /** The sentence the right pane says for a unit's k-th target — PURE: the
