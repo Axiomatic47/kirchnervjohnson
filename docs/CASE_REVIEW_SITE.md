@@ -48,26 +48,32 @@ Studio's own:
 ```
 /api/casereview/docs         → /casereview/data/docs.json          the registry + per-table link counts
 /api/casereview/links/<id>   → /casereview/data/links/<id>.json    one table, every row as the checker served it
-/api/casereview/file/<id>    → /uploads/kirchner-v-johnson/<id>.pdf the PDF, named by its registry id
+/api/casereview/file/<id>    → /uploads/kirchner-v-johnson/<slug>.pdf the PDF, named by a URL-safe slug of its id
+                                                                   (an explicit rule per id the slug changes; the splat for the rest)
 ```
 
-`scripts/import-casereview.mjs` writes the bundle from the running Studio (`http://127.0.0.1:8765`, the work_station
-project) or from the checker's export directory (`--from <dir>`, studio-spec's `export` subcommand) and copies the
+`scripts/import-casereview.mjs` writes the bundle from the checker's EXPORT (the ruled path — the same code path as
+the API, run from a bare Studio checkout, no server) or from the running Studio (`http://127.0.0.1:8765`, the
+work_station project; the same bytes by construction) and copies the
 served PDFs from the case root, **sha-gated against the registry** — a file whose sha256 is not the registry's is not
 served. It prunes what is no longer served, writes `files.json` (id → served path, sha, bytes, pages, mode) and
 `_IMPORT.json` (the stamp: source, registry version, counts, the default document, the vendored Studio commit).
 
 ```
-npm run casereview:import                       # from the Studio API
-node scripts/import-casereview.mjs --from <dir> # from the export
-node scripts/import-casereview.mjs --check      # every build: the bundle is whole, every served file present and the registry's
+# the export (ourstudio 3436c4c7, checker P86): the lane's served JSON to disk — docs.json, links/<id>.json, files.json, _EXPORT.json
+cd ~/Git/ourstudio && env -u PYTHONPATH python3 -m ourstudio_frontend.filing.case_review export \
+  /Users/everest/Git/work_station/1_DCC_1-25-cv-02735-ACR <out_dir> [--force]     # ~60 s; refuses a lane that moves during the run
+node scripts/import-casereview.mjs --from <out_dir>   # the bundle from the export (the stamp carries the export's lane signature and checker)
+npm run casereview:import                             # the same bundle from the Studio API when it runs (byte-identical: measured 29/29 files)
+node scripts/import-casereview.mjs --check            # every build: the bundle is whole, every served file present and the registry's
+node scripts/import-casereview.mjs --out <dir> …      # a dry run elsewhere, for a compare
 ```
 
 **Publication is the registry's word.** docs.json carries a per-row `publish` field (v0.25, 2026-10-01): `serve`
 (the PDF is hosted here), `link` (not hosted; `publish_url` names the official source), `hold` (not published; the row
 is kept so a citation to it still says what it points at). The importer fails closed: a row without the field is
 `hold`, whatever its kind. The admins write the field from the owner's content gates; the owner decides the case-law
-class and the hosting size. Today (v0.25a): serve 985 · link 4 · hold 60.
+class and the hosting size. Today (v0.25b): serve 985 · link 7 · hold 57.
 
 **What the bundle leaves out** (the author's voice everywhere the reader reads; record and links only): the lane's
 seat fields, the drafters' and admins' working notes, the checker's passage texts (the window boxes passages from the
@@ -85,9 +91,10 @@ build with served rows and no files fails the bundle check — by design: nothin
 pane empty with its invitation line; the far-left list is the Studio's tree (groups; mains ECF 77 … 1 descending;
 attachments ascending under their main, folded; the filter; collapse-all; the rail; "hide before ECF 47" on). A
 boxed citation opens its source on the right at the cited page with the passage boxed; the right pane says what it
-shows and what it cannot. A `hold` or `link` target has no file here, and the pane says the file could not be opened
-— the Studio window's read of the `publish` field (the row's mode and URL instead of a fetch) is asked of the
-frontend seat and will arrive by sync.
+shows and what it cannot. A `link` target has no file here and the pane says "not hosted on this site; at <the
+official source>" with the link; a `hold` target "not published on this site yet" — said before any fetch, from the
+row's `publish` field (the Studio's `publishedAway`, vendored at 60864af9); a held document opened on the left says
+the same in its footer.
 
 The site's own `/` stays the under-construction page until the owner's word; `/review` is `noindex` with the site.
 
