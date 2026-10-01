@@ -1,6 +1,6 @@
 {
   "case": "kirchner-v-johnson",
-  "imported": "2026-10-01T15:05:12.457Z",
+  "imported": "2026-10-01T15:08:23.988Z",
   "source": "the checker's export at /private/tmp/claude-501/-Users-everest-Git-ourstudio-everest/f28bb754-b403-4af3-bd27-7400ba11bd3b/scratchpad/export_live",
   "export_stamp": {
     "lane_signature": {
@@ -392,6 +392,6 @@
   },
   "dev_override": false,
   "default_doc": "DDC-077",
-  "vendored_studio_commit": "98ff82f2fcf144d947a496fe1c2c57a91568ce23",
+  "vendored_studio_commit": "3ae7956e66f53eba7efb075da96444f441613401",
   "host_policy": null
 }
