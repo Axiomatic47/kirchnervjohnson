@@ -17,3 +17,17 @@ on kirchner.ink and lawsofexistence.com. Today: an under-construction page.
 - **Voice:** the site speaks as its author. No coordination vocabulary on any page a reader sees.
 - Under construction: `robots.txt` disallows all and the layout sets `noindex`; both flip at launch
   (README).
+
+## Case Review (owner's word 2026-10-01: the site differs from the Studio in skin, not in logic)
+
+- `public/casereview/vendor/*.js` and `public/lib/pdfjs/` are the Studio's files, vendored byte for byte and recorded in
+  `VENDOR.json`. **Never edit them here.** A rule change lands in `~/Git/ourstudio` (studio-spec + frontend review) and
+  comes here by `npm run casereview:sync`; `npm run casereview:check` fails the build on drift. The three shims beside
+  them (`base.js`, `filing/ctxmenu.js`, `reviews.js`) and `app/review/` (the host, the skin) are this repo's code.
+- The bundle under `public/casereview/data/` is written by `scripts/import-casereview.mjs` from the Studio's API or the
+  checker's export — **never hand-edited**. Publication is the registry's per-row `publish` field (serve | link |
+  hold), fail-closed; the site adds nothing the registry has not said. The served PDFs (`public/uploads/`) are
+  sha-gated against the registry and untracked until the owner's hosting decision.
+- pdf.js is the Studio's 4.10.38, pinned in the Studio fixture; the site never installs another build for this page.
+- `/review` is `noindex` and unlinked from `/` until the owner's word; the public mode lives on lawsofexistence.com.
+- Read `docs/CASE_REVIEW_SITE.md` before touching any of it.

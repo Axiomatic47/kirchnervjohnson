@@ -9,3 +9,7 @@ out/
 
 # Coordination ledgers (the Studio reads them locally; never committed)
 .claude/
+
+# the served case PDFs: written by scripts/import-casereview.mjs from the registry (sha-gated); whether they live in git
+# (as lawsofexistence.com's do, ~1 GB for the filings) or elsewhere is the owner's hosting decision — until it, not tracked
+public/uploads/

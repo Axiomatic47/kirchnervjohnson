@@ -50,3 +50,21 @@ Every push to `main` is a production deploy.
 - `public/robots.txt`: replace `Disallow: /` with `Allow: /` and add `Sitemap: https://kirchnervjohnson.com/sitemap.xml`.
 - `app/layout.tsx`: drop `robots: { index: false, follow: false }`.
 - Replace the under-construction page.
+
+## Case Review — the Studio's window on the site
+
+`/review` is the case in review mode: the filings listed as the Studio lists them (docket order descending,
+attachments under their main), the document under review on the left, the cited source at its page on the right.
+The window is the Studio's own module, **vendored byte for byte** under `public/casereview/vendor/` and run as a
+native ES module; the site differs in skin alone (`app/review/casereview.css`). The data is the lane as the Studio
+serves it, bundled under `public/casereview/data/` by `scripts/import-casereview.mjs` and served behind the Studio's
+own API routes (`public/_redirects`, `public/serve.json`). Publication is the registry's per-row `publish` field,
+fail-closed. The served PDFs under `public/uploads/` are not tracked until the owner's hosting decision.
+
+```
+npm run casereview:check     # every build: vendored files = the record; pdf.js files and fonts = the Studio fixture's pin; the bundle whole
+npm run casereview:sync      # on the device: re-vendor from ~/Git/ourstudio at its HEAD and prove it (blobs, pin, harness)
+npm run casereview:import    # on the device: the bundle from the running Studio (127.0.0.1:8765); --from <dir> for the export
+```
+
+The whole of it: `docs/CASE_REVIEW_SITE.md`.

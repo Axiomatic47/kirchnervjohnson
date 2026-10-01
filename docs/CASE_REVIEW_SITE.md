@@ -1,0 +1,102 @@
+# Case Review on the site — the Studio's window, vendored; the lane, bundled
+
+The owner's word (2026-10-01): the case page on the website is a replica of the Studio's Case Review window —
+"documents listed just like they are locally in descending order with the same exact structure … the website only
+differing in skin, not in logic." This file says how that is kept true here and how it is operated.
+
+## One logic
+
+The window is the Studio's own module, run as a native ES module from `public/` — never bundled, never edited here:
+
+| on the site | in the Studio (`~/Git/ourstudio`) | what |
+|---|---|---|
+| `public/casereview/vendor/casereview.js` | `ourstudio_frontend/ui/js/deck/casereview.js` | the window: the filings tree, the two panes, the stepper, the footers, the ⋯ menu, the search, the deep link |
+| `public/casereview/vendor/casereview_core.js` | `…/deck/casereview_core.js` | the contract as code: the fold, the locate, the tree model (`navRows`, `navView`), the right pane's words (`saysFor`), the state string |
+| `public/casereview/vendor/casereview_pdf.js` | `…/deck/casereview_pdf.js` | the PDF pane, used twice |
+| `public/lib/pdfjs/` | `ourstudio_frontend/ui/lib/pdfjs/` | pdf.js **4.10.38** and its fourteen standard fonts — the build every reading-order rule was tuned on |
+
+`public/casereview/vendor/VENDOR.json` records the Studio commit and the sha256 of every vendored file, plus the
+pdf.js pin copied from the Studio fixture's `pdfjs` section (`tests/fixtures/casereview_fold.json`).
+`scripts/sync-casereview.mjs`:
+
+```
+npm run casereview:check        # every build: the files match the record; the pdf.js files and fonts match the pin
+npm run casereview:sync         # on the device: copy from the Studio at its HEAD, rewrite the record, then prove it —
+                                #   blobs at the recorded commit, the fixture's pin, the Studio harness run there
+```
+
+A rule change lands in the Studio first (studio-spec + frontend review), then syncs out; the sites never fork a rule.
+The pdf.js build moves only by one Studio patch that moves the pin and the files together.
+
+The three Studio modules the window imports and the site does not have are **shims** beside it (host code, the only
+code the site owns about the window): `base.js` (`$`, `esc`), `../filing/ctxmenu.js` (the shared menu as a plain
+menu — the items that open the Studio's notes store are not drawn), `reviews.js` (the review composer, a no-op).
+The host (`app/review/CaseReviewMount.tsx`) marks the surface (`document.body.dataset.mode = 'casereview'`, the rule
+under which the window writes its deep link), gives the URL a default document when it names none, and calls
+`mountCaseReview()`. The skin is `app/review/casereview.css`: the Studio's class names, tracks and placements with the
+site's tokens (left pane blue, right pane brass).
+
+**The deep link is the Studio's exact form** — `?casereview=doc=<id>&cite=<page>/<n>[/<k>]&q=<text>&page=<pdf
+page>&right=<id>&rpage=<pdf page>` — written by the window on every step with `replaceState`, restored at mount.
+
+## The data: a bundle of the served API
+
+The window reads the Studio's three read-only routes. The site serves them static behind rewrites
+(`public/_redirects` for Netlify, `public/serve.json` for the local static server), so the window's requests are the
+Studio's own:
+
+```
+/api/casereview/docs         → /casereview/data/docs.json          the registry + per-table link counts
+/api/casereview/links/<id>   → /casereview/data/links/<id>.json    one table, every row as the checker served it
+/api/casereview/file/<id>    → /uploads/kirchner-v-johnson/<id>.pdf the PDF, named by its registry id
+```
+
+`scripts/import-casereview.mjs` writes the bundle from the running Studio (`http://127.0.0.1:8765`, the work_station
+project) or from the checker's export directory (`--from <dir>`, studio-spec's `export` subcommand) and copies the
+served PDFs from the case root, **sha-gated against the registry** — a file whose sha256 is not the registry's is not
+served. It prunes what is no longer served, writes `files.json` (id → served path, sha, bytes, pages, mode) and
+`_IMPORT.json` (the stamp: source, registry version, counts, the default document, the vendored Studio commit).
+
+```
+npm run casereview:import                       # from the Studio API
+node scripts/import-casereview.mjs --from <dir> # from the export
+node scripts/import-casereview.mjs --check      # every build: the bundle is whole, every served file present and the registry's
+```
+
+**Publication is the registry's word.** docs.json carries a per-row `publish` field (v0.25, 2026-10-01): `serve`
+(the PDF is hosted here), `link` (not hosted; `publish_url` names the official source), `hold` (not published; the row
+is kept so a citation to it still says what it points at). The importer fails closed: a row without the field is
+`hold`, whatever its kind. The admins write the field from the owner's content gates; the owner decides the case-law
+class and the hosting size. Today (v0.25a): serve 985 · link 4 · hold 60.
+
+**What the bundle leaves out** (the author's voice everywhere the reader reads; record and links only): the lane's
+seat fields, the drafters' and admins' working notes, the checker's passage texts (the window boxes passages from the
+PDF's own text layer), filesystem paths, mirror paths, shelf aliases. The checker's structured answers (violations,
+warnings, coverage, stale render, `k`, `unit_id`, pdf pages, section-map resolutions) ride unchanged. The five
+filings the court has not stamped (ECF 11, 12, 12-1, 14, 15) carry `filer_copy` and the mark in their title.
+
+**Hosting size.** The served PDFs under `public/uploads/` are **not tracked in git** until the owner's word: the
+filings alone are 1.0 GB, the full serve set 1.6 GB (lawsofexistence.com carries its 436 filings in git). A Netlify
+build with served rows and no files fails the bundle check — by design: nothing published is served from nowhere.
+
+## What a reader gets
+
+`/review` opens the newest filing with a link table on the left (ECF 77 today; the rule, not the number), the right
+pane empty with its invitation line; the far-left list is the Studio's tree (groups; mains ECF 77 … 1 descending;
+attachments ascending under their main, folded; the filter; collapse-all; the rail; "hide before ECF 47" on). A
+boxed citation opens its source on the right at the cited page with the passage boxed; the right pane says what it
+shows and what it cannot. A `hold` or `link` target has no file here, and the pane says the file could not be opened
+— the Studio window's read of the `publish` field (the row's mode and URL instead of a fetch) is asked of the
+frontend seat and will arrive by sync.
+
+The site's own `/` stays the under-construction page until the owner's word; `/review` is `noindex` with the site.
+
+## Verifying a change
+
+1. `npm run build` — typecheck, the vendor check, the bundle check, the export.
+2. `npx serve out -l 4999 --no-clipboard` (a private port; the Studio's pinned 3400/3401 are never used by hand) and
+   open `http://127.0.0.1:4999/review`; `curl -I http://127.0.0.1:4999/api/casereview/docs` must answer JSON, the
+   file route a PDF with `206` on a Range request.
+3. Offscreen: the Studio's `tools/ui_snap/snap` against the page with a state strip in the prep script (canvases
+   render blank offscreen — assert the tree rows, the boxes and the footer words, not pixels).
+4. A Studio change: `npm run casereview:sync`, then 1–3 again.

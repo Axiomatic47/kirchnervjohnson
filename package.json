@@ -2,12 +2,15 @@
   "name": "kirchnervjohnson",
   "version": "0.1.0",
   "private": true,
-  "description": "kirchnervjohnson.com — Kirchner v. Johnson, No. 1:25-cv-02735-ACR (D.D.C.): the filings with every citation linked to its source (static Next.js export on Netlify)",
+  "description": "kirchnervjohnson.com \u2014 Kirchner v. Johnson, No. 1:25-cv-02735-ACR (D.D.C.): the filings in review mode, every citation linked to its source in two panes \u2014 the Studio's Case Review window, vendored, differing in skin alone (static Next.js export on Netlify)",
   "scripts": {
     "dev": "next dev",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
-    "build": "npm run typecheck && next build",
+    "casereview:check": "node scripts/sync-casereview.mjs --check && node scripts/import-casereview.mjs --check",
+    "casereview:sync": "node scripts/sync-casereview.mjs --sync && node scripts/sync-casereview.mjs --check --source",
+    "casereview:import": "node scripts/import-casereview.mjs",
+    "build": "npm run typecheck && npm run casereview:check && next build",
     "start": "npx serve out"
   },
   "dependencies": {

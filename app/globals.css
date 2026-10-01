@@ -15,6 +15,11 @@
   --c-accent: 176 141 87;
   --c-accent-ink: 138 107 58;
   --c-on-ink: 244 241 234;
+  /* the Case Review window (app/review): the left pane's blue, the status colours */
+  --c-pane-left: 53 116 240;
+  --c-ok: 64 128 72;
+  --c-warn: 176 122 24;
+  --c-bad: 178 58 58;
   --shadow-card: 0 1px 2px rgba(27,37,64,0.06), 0 8px 24px -12px rgba(27,37,64,0.18);
 }
 /* Dark — the same brass on deep navy-black; text warms to old paper */
@@ -30,6 +35,10 @@
   --c-accent: 194 157 99;
   --c-accent-ink: 212 176 122;
   --c-on-ink: 17 21 29;
+  --c-pane-left: 110 160 255;
+  --c-ok: 106 176 112;
+  --c-warn: 232 190 92;
+  --c-bad: 224 104 104;
   --shadow-card: 0 1px 2px rgba(0,0,0,0.4), 0 8px 24px -12px rgba(0,0,0,0.6);
 }
 html { -webkit-text-size-adjust: 100%; text-rendering: optimizeLegibility; }
