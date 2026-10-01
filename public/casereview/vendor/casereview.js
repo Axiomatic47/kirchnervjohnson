@@ -37,7 +37,7 @@
 // <base>/<id>_LINKS.tsv and <base>/<id>.pdf (tests/fixtures/casereview).
 import { $, esc } from './base.js';
 import { createPdfPane, orderByPosition } from './casereview_pdf.js';
-import { buildHash, filterNav, foldText, gapPage, hideRows, navRows, navView, parseHash, parseLinksTsv, pdfPageFor, saysFor, targetPages, unitForCite, unitStatus, unitsOf, urlForState } from './casereview_core.js';
+import { buildHash, filterNav, foldText, gapPage, hideRows, navRows, navView, parseHash, parseLinksTsv, pdfPageFor, publishedAway, saysFor, targetPages, unitForCite, unitStatus, unitsOf, urlForState } from './casereview_core.js';
 import { showCtx } from '../filing/ctxmenu.js';
 import { openReview } from './reviews.js';
 
@@ -533,6 +533,7 @@ function refocus(id) { const el = $('#crNavList').querySelector(`.cr-row[data-id
 async function openLeft(id, opts = {}) {
   const doc = st.byId.get(id);
   if (!doc) { setStatus(`${id} is not in the registry`); return; }
+  { const away = publishedAway(doc); if (away) { setStatus(away.parts.map((p) => p.text).join('')); return; } }
   st.left.id = id; st.left.doc = doc; st.left.links = null; st.left.units = null; st.active = null; st.left.problems = []; st.left.coverage = []; st.left.coverageAnswered = [];
   { const el = $('#crLeftTitle'); el.textContent = nameOf(doc); el.title = nameOf(doc); }
   st.left.here = [];
@@ -629,6 +630,8 @@ async function boxAllUnits(id) {
 async function openRight(id, opts = {}) {
   const doc = st.byId.get(id);
   if (!doc) { says(`${id} is not in the registry — nothing opened.`, 'bad'); return false; }
+  // a row this host does not serve (publish link | hold, path null — the site bundle): core's words, no fetch (the Studio's rows carry paths)
+  { const away = publishedAway(doc); if (away) { sayParts(away); return false; } }
   const same = st.right.id === id && st.right.pane.doc;
   st.right.id = id; st.right.doc = doc;
   { const el = $('#crRightTitle'); el.textContent = nameOf(doc); el.title = nameOf(doc); }

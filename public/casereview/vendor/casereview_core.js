@@ -1685,6 +1685,21 @@ export function targetPages(t, doc) {
   return { pdfPage, pdfEnd, viaMap, marked };
 }
 
+/** A registry row a HOST does not serve (docs.json v0.25 `publish`, README
+ *  2026-10-01 — admin 69183d38 on studio-spec fbf555d9's R3; the site export
+ *  applies it: link = path null + the official URL, hold = path null, the
+ *  row kept): the words instead of a fetch that 404s. The Studio ignores the
+ *  field and its rows carry paths, so the test is BOTH — no path AND a
+ *  publish value other than serve. → null (open it) | { kind, parts }. */
+export function publishedAway(doc) {
+  if (!doc || (doc.path != null && doc.path !== '') || !doc.publish || doc.publish === 'serve') return null;
+  const label = doc.label || doc.id;
+  if (doc.publish === 'link' && /^https?:\/\//i.test(doc.publish_url || '')) {
+    return { kind: 'link', parts: [{ text: `${label}: not hosted on this site; at ` }, { text: doc.publish_url, href: doc.publish_url }, { text: ' (opens in the browser).' }] };
+  }
+  return { kind: 'dead', parts: [{ text: `${label}: not published on this site yet. Nothing opened; the reference pane is as it was.` }] };
+}
+
 /** The sentence the right pane says for a unit's k-th target — PURE: the
  *  unit, the target row, the registry entry (null when not in the registry)
  *  and what the pane has resolved so far, → { kind, opens, locate, parts }.
@@ -1712,6 +1727,9 @@ export function saysFor(u, k, t, doc, resolved = null) {
   // R7: only an http(s) URL is ever a live link — a javascript: or data: target is text
   if (t.kind === 'url') { say(`${head} — a url row whose target is not an http(s) address: ${t.target_doc || '(blank)'}. Nothing opened.`); return { kind: 'dead', opens: false, locate: false, parts }; }
   if (!doc) { say(`${head} — target ${t.target_doc || '(blank)'} is not in the registry. Nothing opened.`); return { kind: 'bad', opens: false, locate: false, parts }; }
+  // a target this host does not serve (publish link | hold): the words, no fetch
+  const away = publishedAway(doc);
+  if (away) { say(`${head} — `); parts.push(...away.parts); return { kind: away.kind, opens: false, locate: false, parts }; }
   const r = resolved || targetPages(t, doc);
   const { pdfPage, pdfEnd, viaMap } = r;
   const stamped = rowPage(t.target_page), endStamped = rowPage(t.target_page_end);   // the row as served: '' is blank
