@@ -13,6 +13,7 @@
 //   node scripts/import-casereview.mjs --check                # the bundle on disk is whole (runs in every build)
 //   node scripts/import-casereview.mjs --out <dir>            # write the bundle under <dir> instead of public/ (a dry run)
 //   --uploads-dir <dir under public/> --names id|docket --name-map <json>   # a host's own PDF layout (lawsofexistence.com)
+//   --serve-groups Filings[,…]                                 # a HOST policy: registry serve rows of other groups are not hosted here (link if a url, else hold), stamped
 //   node scripts/import-casereview.mjs --dev-serve-filings    # DEVELOPMENT ONLY — see PUBLICATION below
 //
 // PUBLICATION (studio-spec fbf555d9's R3, 2026-10-01; the owner's content gates of 2026-09-30): a per-row `publish`
@@ -77,8 +78,18 @@ function hostName(d) {
 
 // ---------------------------------------------------------------- the publication decision
 const MODES = new Set(['serve', 'link', 'hold']);
+// HOST POLICY (lawsofexistence.com, 2026-10-01): `--serve-groups Filings[,Rules…]` — the registry's `serve` is the lane's
+// word on what MAY be published; which groups a HOST actually hosts is the owner's hosting decision per site (the
+// non-filing serve set is 537 documents, 735 MB). A serve row outside the listed groups is not hosted here: `link` when
+// the registry names an http(s) publish_url, else `hold` — the row kept and the window says "not published on this
+// site yet" (core.publishedAway). Without the flag every serve row is hosted, as before. Stamped in _IMPORT.json.
+const SERVE_GROUPS = (() => { const v = opt('--serve-groups', null); return v ? new Set(v.split(',').map(x => x.trim()).filter(Boolean)) : null; })();
 function publishOf(doc) {
   const p = doc.publish;
+  if (p === 'serve' && SERVE_GROUPS && !SERVE_GROUPS.has(doc.group)) {
+    const url = /^https?:\/\//.test(String(doc.publish_url || '')) ? doc.publish_url : null;
+    return { mode: url ? 'link' : 'hold', url, by: 'host policy — the group is not hosted on this site' };
+  }
   if (MODES.has(p)) return { mode: p, url: p === 'link' ? (doc.publish_url || null) : null, by: 'the registry' };
   if (DEV && doc.group === 'Filings') return { mode: 'serve', url: null, by: 'DEV OVERRIDE' };
   return { mode: 'hold', url: null, by: p == null ? 'no publish field — fail closed' : `publish ${JSON.stringify(p)} is not serve|link|hold — fail closed` };
@@ -163,6 +174,12 @@ function check() {
   bad += missing + wrong;
   for (const id of Object.keys(docs.links || {})) if (!fs.existsSync(path.join(LINKS, `${id}.json`))) { console.error(`  missing  links/${id}.json`); bad++; }
   for (const f of ['_redirects', 'serve.json']) if (!fs.existsSync(path.join(PUBLIC, f))) { console.error(`  missing  public/${f} (the API rewrites)`); bad++; }
+  // the stamp names the vendored Studio commit it was imported under; a sync after the import leaves it stale — a warning, the bundle itself is unaffected
+  try {
+    const rec = JSON.parse(fs.readFileSync(path.join(PUBLIC, 'casereview', 'vendor', 'VENDOR.json'), 'utf8'));
+    if (imp.vendored_studio_commit && rec.source && rec.source.commit && imp.vendored_studio_commit !== rec.source.commit) console.warn(`  WARNING  the stamp was imported under Studio ${String(imp.vendored_studio_commit).slice(0, 8)}, the vendor record is at ${String(rec.source.commit).slice(0, 8)} — re-run the importer after a sync to re-stamp (the bundle's bytes do not depend on it)`);
+  } catch { /* no record: the vendor check says so */ }
+  if (imp.host_policy) console.log(`  host policy: only ${(imp.host_policy.serve_groups || []).join(', ')} hosted here — ${imp.host_policy.not_hosted_here} registry serve row(s) said, not fetched`);
   if (bad) fail(`${bad} problem(s) in the bundle`);
   console.log(`bundle ok: ${docs.docs.length} documents (${served} served, ${docs.docs.filter(d => d.publish === 'link').length} linked, ${docs.docs.filter(d => d.publish === 'hold').length} held), ${Object.keys(docs.links || {}).length} link tables; imported ${imp.imported} from ${imp.source}`);
 }
@@ -182,8 +199,11 @@ async function run() {
   for (const x of decided) byMode[x.pub.mode]++;
   const overridden = decided.filter(x => x.pub.by === 'DEV OVERRIDE').length;
   const byRegistry = decided.filter(x => x.pub.by === 'the registry').length;
-  console.log(`policy: ${byRegistry} rows carry the registry's publish field, ${decided.length - byRegistry} without one${DEV ? '' : ' (held)'}`);
+  const byHost = decided.filter(x => x.pub.by.startsWith('host policy')).length;
+  console.log(`policy: ${byRegistry + byHost} rows carry the registry's publish field, ${decided.length - byRegistry - byHost} without one${DEV ? '' : ' (held)'}`);
   if (DEV) console.warn(`DEVELOPMENT OVERRIDE: ${overridden} Filings rows without a publish field treated as serve — not the registry's word`);
+  const hostHeld = byHost;
+  if (SERVE_GROUPS) console.log(`host policy: only ${[...SERVE_GROUPS].join(', ')} hosted here — ${hostHeld} serve row(s) of other groups said, not fetched`);
   console.log(`publication: serve ${byMode.serve} · link ${byMode.link} · hold ${byMode.hold}`);
 
   fs.mkdirSync(LINKS, { recursive: true });
@@ -257,12 +277,17 @@ async function run() {
     registry_version: outDocs.registry.version, documents: docs.docs.length, tables: written.size, rows,
     publication: byMode, dev_override: DEV ? `${overridden} Filings rows treated as serve without a publish field` : false,
     default_doc: defaultDoc, vendored_studio_commit: studioCommit,
+    host_policy: SERVE_GROUPS ? { serve_groups: [...SERVE_GROUPS], not_hosted_here: hostHeld } : null,
   };
   fs.writeFileSync(path.join(DATA, '_IMPORT.json'), JSON.stringify(stamp, null, 2) + '\n');
 
   // the rewrites: Netlify's _redirects (the publish dir) and the local static server's serve.json (serve-handler)
+  // written as a MARKED BLOCK: a host whose public/_redirects carries other generated rules (lawsofexistence.com's
+  // legacy 301 freeze) keeps them — the block is replaced in place when present, appended when not
+  const BEGIN = '# casereview BEGIN — generated by scripts/import-casereview.mjs: the Studio\'s Case Review API routes, served static; do not hand-edit this block';
+  const END = '# casereview END';
   const redirects = [
-    '# generated by scripts/import-casereview.mjs — the Studio\'s Case Review API routes, served static',
+    BEGIN,
     `/api/casereview/docs  /casereview/data/docs.json  200`,
     `/api/casereview/links/:id  /casereview/data/links/:id.json  200`,
     // a served document whose file is not <id>.pdf (an unsafe id, or the docket-slug layout): the request path as the
@@ -272,9 +297,15 @@ async function run() {
       return [...new Set([a, b])].map(enc => `/api/casereview/file/${enc}  ${UPLOADS_URL}/${hostName(d)}  200`);
     }),
     `/api/casereview/file/:id  ${UPLOADS_URL}/:id.pdf  200`,
-    '',
+    END,
   ].join('\n');
-  fs.writeFileSync(path.join(PUBLIC, '_redirects'), redirects);
+  const redirectsPath = path.join(PUBLIC, '_redirects');
+  const prior = fs.existsSync(redirectsPath) ? fs.readFileSync(redirectsPath, 'utf8') : '';
+  const i0 = prior.indexOf(BEGIN), i1 = prior.indexOf(END);
+  const merged = i0 >= 0 && i1 > i0
+    ? prior.slice(0, i0) + redirects + prior.slice(i1 + END.length)
+    : (prior.trimEnd() ? `${prior.trimEnd()}\n\n` : '') + redirects + '\n';
+  fs.writeFileSync(redirectsPath, merged);
   const serveJson = {
     cleanUrls: true, trailingSlash: false,
     rewrites: [

@@ -81,6 +81,13 @@ PDF's own text layer), filesystem paths, mirror paths, shelf aliases. The checke
 warnings, coverage, stale render, `k`, `unit_id`, pdf pages, section-map resolutions) ride unchanged. The five
 filings the court has not stamped (ECF 11, 12, 12-1, 14, 15) carry `filer_copy` and the mark in their title.
 
+**A host policy** (`--serve-groups Filings[,…]`, lawsofexistence.com's addition, 2026-10-01): the registry's `serve` is the
+lane's word on what MAY be published; which groups a site actually hosts is the owner's hosting decision per site. A
+serve row outside the listed groups is not hosted there — `link` when the registry names an http(s) `publish_url`, else
+`hold` — the row kept, the window saying so, the policy stamped in `_IMPORT.json.host_policy` and printed by the check.
+Without the flag every serve row is hosted. The `_redirects` rules are written as a marked block (`# casereview BEGIN …
+END`) merged into the file, so a host whose `_redirects` carries other generated rules keeps them. One importer, both sites.
+
 **Hosting size.** The served PDFs under `public/uploads/` are **not tracked in git** until the owner's word: the
 filings alone are 1.0 GB, the full serve set 1.6 GB (lawsofexistence.com carries its 436 filings in git). A Netlify
 build with served rows and no files fails the bundle check — by design: nothing published is served from nowhere.
