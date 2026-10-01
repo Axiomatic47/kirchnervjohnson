@@ -1753,8 +1753,10 @@ export function saysFor(u, k, t, doc, resolved = null) {
   // N2 (b0d76502): the printed text often ends with the pin ("ECF 51-54 at 3") — say it once
   // … and not one the printed text already CARRIES anywhere at token bounds ('Adler v. Loyd, 496 F. Supp. 3d 269 (D.D.C. 2020)'
   // pinned '496 F. Supp. 3d 269' printed the reporter twice — f28bb754's proof on the site, 2026-10-01); a bare page pin ('3') is said
-  // a unit with SEVERAL targets keeps the pin unless the text ends with it: the pin names which of the list opened
-  // ('Fed. R. Civ. P. 19(a), 19(c), 20(a)(2), 21' → target 1 of 4 is '19(a)'); the census: 710 of 5,317 pinned rows on five tables
+  // a unit with SEVERAL targets keeps the pin — it is the chooser, naming which of the list opened ('Fed. R. Civ. P. 19(a),
+  // 19(c), 20(a)(2), 21' → target 1 of 4 is '19(a)'; 'TAC ¶¶ 321, 325-326' at k = 2 → '¶ 325-326') — UNLESS the text ends
+  // with it, the N2 case as it always was (the '· target k of N' suffix names the choice; 'ECF 51-54 at 3 at 3' is the repeat
+  // the owner's word forbids): N2a, spec 62cab44 on b0d76502's 25-table census (552 + 294 dropped, the choosers kept)
   const fl = foldText(t.target_label || '');
   const pin = t.target_label && !(u.targets.length > 1 ? foldText(u.text).endsWith(fl) : textCarries(foldText(u.text), fl)) ? ` ${t.target_label}` : '';
   const unfound = () => { if (u.missing) warn(` (box not located on the left: ${u.missing})`); };
