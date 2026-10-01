@@ -12,6 +12,7 @@
 //   node scripts/import-casereview.mjs --from <export_dir>    # from the checker's export (studio-spec R1) once it lands
 //   node scripts/import-casereview.mjs --check                # the bundle on disk is whole (runs in every build)
 //   node scripts/import-casereview.mjs --out <dir>            # write the bundle under <dir> instead of public/ (a dry run)
+//   --uploads-dir <dir under public/> --names id|docket --name-map <json>   # a host's own PDF layout (lawsofexistence.com)
 //   node scripts/import-casereview.mjs --dev-serve-filings    # DEVELOPMENT ONLY — see PUBLICATION below
 //
 // PUBLICATION (studio-spec fbf555d9's R3, 2026-10-01; the owner's content gates of 2026-09-30): a per-row `publish`
@@ -44,8 +45,11 @@ const PROJECT_ROOT = opt('--root', '/Users/everest/Git/work_station');
 const CASE_ROOT_OPT = opt('--case-root', null);
 const DATA = path.join(PUBLIC, 'casereview', 'data');
 const LINKS = path.join(DATA, 'links');
-const UPLOADS = path.join(PUBLIC, 'uploads', CASE);
-const UPLOADS_URL = `/uploads/${CASE}`;
+// the served PDFs' home: public/uploads/<case>/ here; a host that already holds its files elsewhere names the directory
+// (relative to public/) — lawsofexistence.com: --uploads-dir uploads/constitutional/pdfs --names docket --name-map <mo-stay.json>
+const UPLOADS_REL = opt('--uploads-dir', path.join('uploads', CASE)).replace(/^\/+|\/+$/g, '');
+const UPLOADS = path.join(PUBLIC, UPLOADS_REL);
+const UPLOADS_URL = `/${UPLOADS_REL}`;
 const DEV = flag('--dev-serve-filings');
 const CHECK = flag('--check');
 
@@ -203,8 +207,10 @@ async function run() {
     copied++; served.add(name);
   }
   // prune what is no longer served
+  // prune only what THIS import would name for a document no longer served — a host's other files in a shared directory stay
   let pruned = 0;
-  for (const f of fs.readdirSync(UPLOADS)) if (f.endsWith('.pdf') && !served.has(f)) { fs.rmSync(path.join(UPLOADS, f)); pruned++; }
+  const mine = new Set(decided.map(({ d }) => { try { return hostName(d); } catch { return null; } }).filter(Boolean));
+  for (const f of fs.readdirSync(UPLOADS)) if (f.endsWith('.pdf') && mine.has(f) && !served.has(f)) { fs.rmSync(path.join(UPLOADS, f)); pruned++; }
   console.log(`files: ${copied} copied, ${kept} already in place, ${refused} refused, ${pruned} pruned`);
   if (refused) fail(`${refused} served document(s) could not be gated — nothing is served that is not the registry's`);
 
