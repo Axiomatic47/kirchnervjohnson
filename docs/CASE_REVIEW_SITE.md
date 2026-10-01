@@ -103,6 +103,12 @@ official source>" with the link; a `hold` target "not published on this site yet
 row's `publish` field (the Studio's `publishedAway`, vendored at 60864af9); a held document opened on the left says
 the same in its footer.
 
+**Where a row opens** (the Studio's rule of 2026-10-01, vendored at 1d000044): a table-of-contents entry moves within the pane it
+was clicked in and opens nothing in the other; a citation in the left opens its source on the right; a citation clicked in the
+right pane opens in the right, the left never moving — the right pane draws its own citation boxes when its document has a
+table (a document without one answers 404 on the static links route, which the window reads as no table), and the way back is
+the left's unmoved citation.
+
 The site's own `/` stays the under-construction page until the owner's word; `/review` is `noindex` with the site.
 
 ## Verifying a change
