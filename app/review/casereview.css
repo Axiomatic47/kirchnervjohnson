@@ -152,7 +152,9 @@
 .cr-tabs { display: flex; align-items: stretch; gap: 2px; height: 32px; padding: 3px 6px 0; background: var(--panel); border-bottom: 1px solid var(--line); min-width: 0; overflow: hidden; user-select: none; }
 .cr-tabs[hidden] { display: none; }
 .cr-tab { flex: 1 1 0; min-width: 0; max-width: 240px; display: inline-flex; align-items: center; gap: 5px; padding: 0 9px; border: 1px solid var(--line); border-bottom: none; border-radius: 6px 6px 0 0; background: var(--panel-2); color: var(--dim); font: 11.5px var(--mono); cursor: pointer; text-align: left; }
-.cr-tab .cr-tabtext { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.cr-tab .cr-tabtext { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: min(100%, 8ch); flex: 1 1 auto; }   /* a FLOOR on the title that holds a docket label WHOLE in the tab's own font — 'ECF 74' is wider than 6ch (ch = the '0'; E C F are wider): 8ch, measured on 7d866ecf's 490-px frame, so ECF 74 and ECF 73 read apart */
+.cr-tab .cr-tabpage { white-space: nowrap; overflow: hidden; text-overflow: clip; min-width: 0; flex: 0 1 auto; color: var(--dim); }   /* the page yields only BELOW the title's floor — clipped, never '·…' (an ellipsis of nothing); at the owner's width both read whole */
+.cr-tab.is-active .cr-tabpage { color: var(--ink); }
 .cr-tab .cr-tablock { font-style: normal; font-size: 11px; flex: none; opacity: .85; }
 .cr-tab.is-exploring { border-style: dashed; font-style: italic; }
 .cr-tab.is-empty { color: color-mix(in srgb, var(--dim) 70%, transparent); }
