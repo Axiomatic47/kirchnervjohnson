@@ -109,6 +109,11 @@ right pane opens in the right, the left never moving — the right pane draws it
 table (a document without one answers 404 on the static links route, which the window reads as no table), and the way back is
 the left's unmoved citation.
 
+**The right pane's tab bar** (the Studio's rule of 2026-10-02, vendored at 85c2e4ca): up to five tabs on the right pane — at
+most four locked at their document and page by "lock to tab bar" in the pane's menu, standing left in lock order while the
+reviewer explores from the left, and one exploring tab, rightmost, that every link opens into. The bar is remembered in the
+browser per case, never in the data; the deep link's `right=` names the exploring tab as before.
+
 The site's own `/` stays the under-construction page until the owner's word; `/review` is `noindex` with the site.
 
 ## Verifying a change
