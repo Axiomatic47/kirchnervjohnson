@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // scripts/sync-casereview.mjs — the Studio's Case Review window, vendored byte for byte.
 //
-//   node scripts/sync-casereview.mjs --check          # the files under public/ match VENDOR.json and its pdf.js pin (every build)
+//   node scripts/sync-casereview.mjs --check          # the files under public/ match VENDOR.json and its pdf.js pin; the window's
+//                                                     #    imports from the shims are covered by the shims' exports (every build)
 //   node scripts/sync-casereview.mjs --check --source # …and VENDOR.json matches the Studio checkout at its recorded commit:
 //                                                     #    the blobs, the fixture's `pdfjs` section, and the Studio harness run there
 //   node scripts/sync-casereview.mjs --sync           # copy from the Studio checkout at its HEAD, rewrite VENDOR.json (pin included)
@@ -39,6 +40,40 @@ function loadRecord() { return JSON.parse(fs.readFileSync(RECORD, 'utf8')); }
 function git(...a) { return execFileSync('git', ['-C', STUDIO, ...a], { encoding: 'buffer', maxBuffer: 64 << 20 }); }
 function needStudio() { if (!fs.existsSync(path.join(STUDIO, '.git'))) fail(`no Studio checkout at ${STUDIO} (set STUDIO_DIR)`); }
 
+/** The window's named imports from the shims against what the shims export. A name the Studio's window starts
+ *  importing that the site's shim does not export fails the module graph at link time — the whole window, silently,
+ *  on the page — so it fails here first, in words (2026-10-02, ahead of the right pane's tab bar: the shared menu may
+ *  gain an import). Named imports only; the window uses no default or namespace imports from the shims. */
+function shimCoverage(rec) {
+  let bad = 0;
+  const shims = rec.shims || {};
+  const importRe = /^\s*import\s*\{([^}]*)\}\s*from\s*'([^']+)'/gm;
+  const exportsOf = (src) => {
+    const names = new Set();
+    for (const m of src.matchAll(/^\s*export\s+(?:async\s+)?(?:function\*?|const|let|var|class)\s+([A-Za-z_$][\w$]*)/gm)) names.add(m[1]);
+    for (const m of src.matchAll(/^\s*export\s*\{([^}]*)\}/gm)) for (const part of m[1].split(',')) { const as = part.trim().split(/\s+as\s+/); const n = (as[1] || as[0]).trim(); if (n) names.add(n); }
+    return names;
+  };
+  for (const rel of Object.keys(rec.files)) {
+    if (!rel.endsWith('.js') || !rel.startsWith('casereview/')) continue;
+    const p = path.join(PUBLIC, rel);
+    if (!fs.existsSync(p)) continue;                                    // reported by the file check above
+    const src = fs.readFileSync(p, 'utf8');
+    for (const m of src.matchAll(importRe)) {
+      const target = path.posix.normalize(path.posix.join(path.posix.dirname(rel), m[2]));
+      if (!Object.prototype.hasOwnProperty.call(shims, target)) continue; // a vendored module, not a shim
+      const shimPath = path.join(PUBLIC, target);
+      if (!fs.existsSync(shimPath)) continue;                             // reported above
+      const have = exportsOf(fs.readFileSync(shimPath, 'utf8'));
+      const want = m[1].split(',').map((x) => x.trim()).filter(Boolean).map((x) => x.split(/\s+as\s+/)[0].trim());
+      const missing = want.filter((n) => !have.has(n));
+      if (missing.length) { console.error(`  SHIM     ${target} exports no ${missing.join(', ')} — ${rel} imports it; add it to the shim before this sync lands`); bad++; }
+      else console.log(`  shim     ${target} ← ${rel} imports {${want.join(', ')}}: covered`);
+    }
+  }
+  return bad;
+}
+
 /** The vendored files and the pin against the record alone (no Studio needed). */
 function check(rec) {
   let bad = 0;
@@ -53,6 +88,7 @@ function check(rec) {
     if (!fs.existsSync(path.join(PUBLIC, rel))) { console.error(`  missing  ${rel} (a shim the window imports)`); bad++; }
     else console.log(`  shim     ${rel}`);
   }
+  bad += shimCoverage(rec);
   const pin = rec.pdfjs_pin || {};
   if (!pin.version || !pin.files) { console.error('  NO PIN   VENDOR.json carries no pdfjs_pin — run --sync from the Studio checkout'); return bad + 1; }
   for (const [name, digest] of Object.entries(pin.files)) {
