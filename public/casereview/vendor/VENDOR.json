@@ -2,9 +2,9 @@
   "what": "The Studio's Case Review WINDOW, vendored byte for byte — the window itself (casereview.js), its pure core (casereview_core.js), its PDF pane (casereview_pdf.js) and the pdf.js build they were tuned on. The site runs them as native ES modules from public/ — never bundled, never edited here; the three Studio modules the window imports (base.js, ../filing/ctxmenu.js, reviews.js) are the site's SHIMS beside it, the only host code. A rule change lands in the Studio first (studio-spec + frontend review) and syncs out with scripts/sync-casereview.mjs; `npm run casereview:check` refuses a build whose files drift from this record or from the Studio fixture's pdf.js pin.",
   "source": {
     "repo": "git@github.com:Axiomatic47/ourstudio.git",
-    "commit": "79b8fd3a9ac02df12aab5ff2c572728b2830d03f",
+    "commit": "783accd9ad616022ad9d82314cb6c357c7322fef",
     "files_last_changed": "d0576791278abc8d5cfe9e5463dbeb7084102778",
-    "vendored": "2026-10-05T23:13:00.751Z"
+    "vendored": "2026-10-05T23:35:08.703Z"
   },
   "files": {
     "casereview/vendor/casereview.js": {
