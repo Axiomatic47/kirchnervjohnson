@@ -20,12 +20,15 @@ pdf.js pin copied from the Studio fixture's `pdfjs` section (`tests/fixtures/cas
 `scripts/sync-casereview.mjs`:
 
 ```
-npm run casereview:check        # every build: the files match the record; the pdf.js files and fonts match the pin
+npm run casereview:check        # every build: the files match the record; the pdf.js files and fonts match the pin; every name the
+                                #   window imports from a shim is one the shim exports (a new import fails here, in words, not on the page)
 npm run casereview:sync         # on the device: copy from the Studio at its HEAD, rewrite the record, then prove it —
                                 #   blobs at the recorded commit, the fixture's pin, the Studio harness run there
 ```
 
 A rule change lands in the Studio first (studio-spec + frontend review), then syncs out; the sites never fork a rule.
+A sync after days apart is also a lane read: when the registry has moved under the bundle (a served file's sha, a publish word, a
+new checker field), take a fresh export first and import from it, so the bundle and the window move together.
 The pdf.js build moves only by one Studio patch that moves the pin and the files together.
 
 The three Studio modules the window imports and the site does not have are **shims** beside it (host code, the only
