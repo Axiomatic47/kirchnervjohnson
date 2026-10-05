@@ -75,6 +75,22 @@ function shimCoverage(rec) {
 }
 
 /** The vendored files and the pin against the record alone (no Studio needed). */
+// THE STAMP BESIDE THE RECORD (studio-spec 7d866ecf's ask, 2026-10-05; informational, never a refusal): the bundle's stamp names
+// the Studio commit its export ran at and the checker's label (and, once P91a lands, the checker's source sha256); the record names
+// the commit the window was copied at. They differ whenever one moved without the other — 79b8fd3a's bundle under 783accd9's window
+// on 10-05, bodies identical — a fact a reader should see, not a fault this check should refuse: the window's identity is the blobs
+// above, the bundle's is the importer's --check. No pin is read here: one enforcement point, where the source changes (the Studio's suite).
+function stampLine(rec) {
+  const p = path.join(PUBLIC, 'casereview', 'data', '_IMPORT.json');
+  if (!fs.existsSync(p)) { console.log('  stamp    no bundle at public/casereview/data/_IMPORT.json (the importer writes it)'); return; }
+  let imp; try { imp = JSON.parse(read(p)); } catch { console.log("  stamp    _IMPORT.json unreadable — the importer's --check says why"); return; }
+  const ex = imp.export_stamp || {};
+  const bundleAt = ex.ourstudio_commit ? String(ex.ourstudio_commit) : (imp.vendored_studio_commit ? short(imp.vendored_studio_commit) : '?');
+  const windowAt = (rec.source && rec.source.commit) ? short(rec.source.commit) : '?';
+  const same = bundleAt !== '?' && windowAt !== '?' && bundleAt.slice(0, 7) === windowAt.slice(0, 7);
+  const src = ex.checker_source_sha256 ? ` · source ${short(String(ex.checker_source_sha256))}…` : '';
+  console.log(`  stamp    bundle: ourstudio ${bundleAt} · checker ${ex.checker || '?'}${src} · registry ${ex.registry_version || imp.registry_version || '?'} | window: ${windowAt}${same ? ' — one Studio commit' : ' — DIFFERENT Studio commits (the window and the bundle were taken at different heads: a fact to see, not a fault)'}`);
+}
 function check(rec) {
   let bad = 0;
   for (const [rel, f] of Object.entries(rec.files)) {
@@ -108,6 +124,7 @@ function check(rec) {
     else fontsOk++;
   }
   console.log(`  pin      ${FONTS_DIR}/ — ${fontsOk} of ${Object.keys(fonts).length} standard fonts by digest`);
+  stampLine(rec);
   return bad;
 }
 

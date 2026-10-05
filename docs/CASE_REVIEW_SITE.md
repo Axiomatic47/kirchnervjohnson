@@ -21,7 +21,9 @@ pdf.js pin copied from the Studio fixture's `pdfjs` section (`tests/fixtures/cas
 
 ```
 npm run casereview:check        # every build: the files match the record; the pdf.js files and fonts match the pin; every name the
-                                #   window imports from a shim is one the shim exports (a new import fails here, in words, not on the page)
+                                #   window imports from a shim is one the shim exports (a new import fails here, in words, not on the page);
+                                #   then the bundle's stamp (the Studio commit its export ran at, the checker label, the checker's source sha
+                                #   once P91a lands) printed beside the record's commit — different commits are a fact to see, not a fault
 npm run casereview:sync         # on the device: copy from the Studio at its HEAD, rewrite the record, then prove it —
                                 #   blobs at the recorded commit, the fixture's pin, the Studio harness run there
 ```
