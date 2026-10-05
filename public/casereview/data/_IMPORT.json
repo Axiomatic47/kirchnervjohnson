@@ -1,15 +1,15 @@
 {
   "case": "kirchner-v-johnson",
-  "imported": "2026-10-02T23:21:40.013Z",
-  "source": "the checker's export at /private/tmp/claude-501/-Users-everest-Git-ourstudio-everest/f28bb754-b403-4af3-bd27-7400ba11bd3b/scratchpad/export_live",
+  "imported": "2026-10-05T17:27:06.979Z",
+  "source": "the checker's export at /private/tmp/claude-501/-Users-everest-Git-ourstudio-everest/f28bb754-b403-4af3-bd27-7400ba11bd3b/scratchpad/export_1005",
   "export_stamp": {
     "lane_signature": {
-      "sha256": "5aff1be046a6aaba07cb714218f80d3b036f92b9587e2b80d471d4e64d4f4cbb",
+      "sha256": "fddde70649f3e40438222e93f632e2f004d8a73d2541fe53bf8ba96a54e46862",
       "files": [
         {
           "path": "_admin/case_review/docs.json",
-          "bytes": 1079537,
-          "sha256": "f51dd8b8a07e7b00340dd64828bceeec7f483f4ab7d3380cd21af9daba6a3a9a"
+          "bytes": 1082401,
+          "sha256": "6952f9a8177c28fd8b5fb35b7351c5615fe8782ca749eb3362b49ec4455c7192"
         },
         {
           "path": "_admin/case_review/links/LINKS_DDC-051.meta.json",
@@ -313,12 +313,12 @@
         }
       ]
     },
-    "ourstudio_commit": "3436c4c7",
+    "ourstudio_commit": "333fd011",
     "checker": "P86",
-    "exported": "2026-10-01T13:33:57+00:00",
+    "exported": "2026-10-05T17:26:32+00:00",
     "case_root": "/Users/everest/Git/work_station/1_DCC_1-25-cv-02735-ACR",
     "project_root": "/Users/everest/Git/work_station",
-    "registry_version": "v0.25b",
+    "registry_version": "v0.25e",
     "tables": [
       "DDC-051",
       "DDC-052",
@@ -381,7 +381,7 @@
       "manifest": "files.json"
     }
   },
-  "registry_version": "v0.25b",
+  "registry_version": "v0.25e",
   "documents": 1049,
   "tables": 25,
   "rows": 7981,
@@ -392,6 +392,6 @@
   },
   "dev_override": false,
   "default_doc": "DDC-077",
-  "vendored_studio_commit": "8de0af62da940bb8933c29f720c156c92a3b122d",
+  "vendored_studio_commit": "333fd011bb18199e2d25e25d10ddaeaaef05f1a2",
   "host_policy": null
 }
