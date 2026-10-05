@@ -62,7 +62,10 @@ the API, run from a bare Studio checkout, no server) or from the running Studio 
 work_station project; the same bytes by construction) and copies the
 served PDFs from the case root, **sha-gated against the registry** — a file whose sha256 is not the registry's is not
 served. It prunes what is no longer served, writes `files.json` (id → served path, sha, bytes, pages, mode) and
-`_IMPORT.json` (the stamp: source, registry version, counts, the default document, the vendored Studio commit).
+`_IMPORT.json` (the stamp: source, registry version, counts, the default document, the vendored Studio commit, and the export's own
+stamp whole — the Studio commit the export ran at, the checker label `checker` and, since P91a, `checker_source_sha256`, one sha256 over
+the four checker modules pinned with the label by the Studio's suite; a bundle's stamp names the reading it carries, and the vendor check
+prints it beside the record's commit).
 
 ```
 # the export (ourstudio 3436c4c7, checker P86): the lane's served JSON to disk — docs.json, links/<id>.json, files.json, _EXPORT.json
