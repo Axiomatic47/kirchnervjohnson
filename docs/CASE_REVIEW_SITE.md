@@ -78,7 +78,8 @@ class and the hosting size. Today (v0.25b): serve 985 · link 7 · hold 57.
 **What the bundle leaves out** (the author's voice everywhere the reader reads; record and links only): the lane's
 seat fields, the drafters' and admins' working notes, the checker's passage texts (the window boxes passages from the
 PDF's own text layer), filesystem paths, mirror paths, shelf aliases. The checker's structured answers (violations,
-warnings, coverage, stale render, `k`, `unit_id`, pdf pages, section-map resolutions) ride unchanged. The five
+warnings, coverage, stale render, `k`, `unit_id`, pdf pages, section-map resolutions, and since 2026-10-05 `target_columns` — the pages of a quoted row's target span the checker
+reads as two-column, which the window's miss wording reads when its own gutter read finds nothing) ride unchanged. The five
 filings the court has not stamped (ECF 11, 12, 12-1, 14, 15) carry `filer_copy` and the mark in their title.
 
 **A host policy** (`--serve-groups Filings[,…]`, lawsofexistence.com's addition, 2026-10-01): the registry's `serve` is the
