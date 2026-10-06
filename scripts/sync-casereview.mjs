@@ -89,7 +89,11 @@ function stampLine(rec) {
   const windowAt = (rec.source && rec.source.commit) ? short(rec.source.commit) : '?';
   const same = bundleAt !== '?' && windowAt !== '?' && bundleAt.slice(0, 7) === windowAt.slice(0, 7);
   const src = ex.checker_source_sha256 ? ` · source ${short(String(ex.checker_source_sha256))}…` : '';
-  console.log(`  stamp    bundle: ourstudio ${bundleAt} · checker ${ex.checker || '?'}${src} · registry ${ex.registry_version || imp.registry_version || '?'} | window: ${windowAt}${same ? ' — one Studio commit' : ' — DIFFERENT Studio commits (the window and the bundle were taken at different heads: a fact to see, not a fault)'}`);
+  // P94 (studio-spec 7d866ecf, 2026-10-06): the export signs the SHELF its passages were read from — one sha256 over the
+  // machine_read bytes of every document a quoted row targets. It rides the stamp whole, like the checker's source before it;
+  // printed here so a reader of the check sees all three identities a bundle was built under, label included.
+  const mir = ex.mirrors_sha256 ? ` · mirrors ${short(String(ex.mirrors_sha256))}…` : '';
+  console.log(`  stamp    bundle: ourstudio ${bundleAt} · checker ${ex.checker || '?'}${src}${mir} · registry ${ex.registry_version || imp.registry_version || '?'} | window: ${windowAt}${same ? ' — one Studio commit' : ' — DIFFERENT Studio commits (the window and the bundle were taken at different heads: a fact to see, not a fault)'}`);
 }
 function check(rec) {
   let bad = 0;
