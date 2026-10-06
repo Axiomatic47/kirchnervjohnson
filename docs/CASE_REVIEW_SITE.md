@@ -84,6 +84,15 @@ is kept so a citation to it still says what it points at). The importer fails cl
 `hold`, whatever its kind. The admins write the field from the owner's content gates; the owner decides the case-law
 class and the hosting size. Today (v0.25b): serve 985 · link 7 · hold 57.
 
+**What a lane correction does and does not reach.** The two are easy to confuse and the difference decides what a reader sees. The
+checker's `passage` — its own oracle text, read from the shelf mirror — is DROPPED (`ROW_DROP`: `by`, `note`, `passage`), because the
+window boxes passages from the PDF's own text layer. A passage correction therefore never reaches a reader on any site; it reaches them
+through the Studio's verification. The row's `target_quote` — the quoted matter the pane PRINTS in its status line — is served, and a
+correction to it does arrive: on 2026-10-06 three rows lost a break hyphen copied from a superseded mirror ('consti-tuting' →
+'constituting'), two tables moved, and the pane now prints the court's word. Measure which field moved before saying whether a landing is
+visible here, and measure it through a dry run (`--from <export> --out <dir>`, comparing `<dir>/casereview/data/…`) rather than from the
+export alone.
+
 **What the bundle leaves out** (the author's voice everywhere the reader reads; record and links only): the lane's
 seat fields, the drafters' and admins' working notes, the checker's passage texts (the window boxes passages from the
 PDF's own text layer), filesystem paths, mirror paths, shelf aliases. The checker's structured answers (violations,
