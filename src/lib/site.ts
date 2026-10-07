@@ -27,6 +27,7 @@ export const SITE = {
 export const NAV = [
   { href: '/', label: 'Home' },
   { href: '/review', label: 'The case in review' },
+  { href: '/research/immunity-timeline', label: 'The history of immunity' },
   { href: '/about', label: 'About' },
   { href: '/legal', label: 'Legal' },
   { href: '/contact', label: 'Contact' },
