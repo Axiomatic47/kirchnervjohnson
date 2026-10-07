@@ -2,7 +2,7 @@
   "name": "kirchnervjohnson",
   "version": "0.1.0",
   "private": true,
-  "description": "kirchnervjohnson.com \u2014 Kirchner v. Johnson, No. 1:25-cv-02735-ACR (D.D.C.): the filings in review mode, every citation linked to its source in two panes \u2014 the Studio's Case Review window, vendored, differing in skin alone (static Next.js export on Netlify)",
+  "description": "kirchnervjohnson.com — Kirchner v. Johnson, No. 1:25-cv-02735-ACR (D.D.C.): the filings in review mode, every citation linked to its source in two panes — the Studio's Case Review window, vendored, differing in skin alone (static Next.js export on Netlify)",
   "scripts": {
     "dev": "next dev",
     "typecheck": "tsc --noEmit",
@@ -10,13 +10,16 @@
     "casereview:check": "node scripts/sync-casereview.mjs --check && node scripts/import-casereview.mjs --check",
     "casereview:sync": "node scripts/sync-casereview.mjs --sync && node scripts/sync-casereview.mjs --check --source",
     "casereview:import": "node scripts/import-casereview.mjs",
-    "build": "npm run typecheck && npm run casereview:check && next build",
-    "start": "npx serve out"
+    "build": "npm run typecheck && npm run validate-timeline && npm run casereview:check && next build",
+    "start": "npx serve out",
+    "validate-timeline": "node scripts/validate-timeline.mjs"
   },
   "dependencies": {
     "next": "^16.2.10",
     "react": "^19.2.7",
-    "react-dom": "^19.2.7"
+    "react-dom": "^19.2.7",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

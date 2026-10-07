@@ -32,3 +32,17 @@ on kirchner.ink and lawsofexistence.com. The front page is that review; the site
 - The window is the front page (`/`, owner's word 2026-10-06); `/review` forwards there with the deep link. The site
   stays `noindex` until launch; the public mode lives on lawsofexistence.com.
 - Read `docs/CASE_REVIEW_SITE.md` before touching any of it.
+
+## The immunity timeline (owner's word 2026-10-06: on this site, on kirchner.ink and on lawsofexistence.com)
+
+- `/research/immunity-timeline` is the actual history of immunity in all its categories beside endqi.org's six-step origin
+  story, shared with Campaign Zero as a proposed correction. ONE content file, `public/research/immunity-timeline.json`,
+  the same reviewed file on every site (every fact from the book or a shelf copy; the drafters write it, the sites render
+  it, nobody here edits a fact); absent → the route answers 404 and nothing links to it.
+- `src/lib/immunity-timeline.ts` (the shape), `src/lib/immunity-timeline.server.ts`, `scripts/validate-timeline.mjs` (the
+  build gate: ids, years, the closed category set, quote pins, links, the comparison's cross-references, and no
+  coordination vocabulary in reader-facing text), `app/research/immunity-timeline/{TimelineBody,TimelineFilter}.tsx` and
+  `timeline.css` are **byte-identical with kirchner.ink's** — a change lands on both (and goes to lawsofexistence.com by
+  hand-off); `page.tsx` is this site's shell and `app/_components/Markdown.tsx` its reduced markdown renderer. The book's
+  pages are not on this site, so the shell passes the absolute `bookBase` on kirchner.ink.
+

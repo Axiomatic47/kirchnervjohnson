@@ -52,6 +52,13 @@ Every push to `main` is a production deploy.
 - `app/layout.tsx`: drop `robots: { index: false, follow: false }`.
 - Nothing to swap in: the front page has been the Case Review since 2026-10-06 (the owner's word).
 
+## The immunity timeline
+
+`/research/immunity-timeline` sets the actual history of immunity, in all its categories, beside the six-step origin story at
+endqi.org — a proposed correction, shared with Campaign Zero, carried on this site, on kirchner.ink and on lawsofexistence.com.
+The content is one file, `public/research/immunity-timeline.json`, the same reviewed file on every site; the page renders it and
+adds nothing, and the route answers 404 until the file exists. `npm run validate-timeline` is the build gate.
+
 ## Case Review — the Studio's window on the site
 
 `/` — the front page — is the case in review mode (`/review`, its path until 2026-10-06, forwards there with the deep
