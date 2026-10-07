@@ -39,7 +39,8 @@
 .cr-head .cr-caption { font-family: ui-serif, "Iowan Old Style", Palatino, Georgia, "Times New Roman", serif; font-size: 17px; color: rgb(var(--c-ink)); }
 .cr-head .cr-caption .v { color: rgb(var(--c-muted)); }
 .cr-head .cr-no { font-variant-numeric: tabular-nums; }
-.cr-head .cr-mode { margin-left: auto; text-transform: uppercase; letter-spacing: .16em; font-size: 11px; color: rgb(var(--c-accent-ink)); }
+.cr-head .cr-nav-links { margin-left: auto; display: flex; gap: 14px; }
+.cr-head .cr-mode { text-transform: uppercase; letter-spacing: .16em; font-size: 11px; color: rgb(var(--c-accent-ink)); }
 .cr-head a { color: rgb(var(--c-muted)); text-decoration: none; }
 .cr-head a:hover { color: rgb(var(--c-ink)); text-decoration: underline; }
 #casereviewRoot { flex: 1 1 auto; display: flex; flex-direction: column; min-height: 0; overflow: hidden; }

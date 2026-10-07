@@ -7,7 +7,7 @@ export const SITE_NAME = 'Kirchner v. Johnson';
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_ORIGIN),
   title: { default: SITE_NAME, template: `%s — ${SITE_NAME}` },
-  description: 'Kirchner v. Johnson, No. 1:25-cv-02735-ACR (D.D.C.): the filings with every citation linked to its source.',
+  description: 'Kirchner v. Johnson, No. 1:25-cv-02735-ACR (D.D.C.): the record of the case with every citation linked to its source, for evaluation by prospective counsel and for coordination with organizations.',
   // not launched: nothing here is for the index yet — the one flag to drop at launch, with public/robots.txt (README)
   robots: { index: false, follow: false },
 };

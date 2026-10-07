@@ -1,8 +1,9 @@
 # kirchnervjohnson.com
 
 *Kirchner v. Johnson*, No. 1:25-cv-02735-ACR (D.D.C.). The site will carry the filings in the case
-with every citation linked to the source it cites. The front page is that review; the site is built and not yet
-launched (noindex, robots disallow-all).
+with every citation linked to the source it cites, for evaluation by prospective counsel and for coordination with
+organizations — not for litigating the case in public. The front page says so; the review is at `/review`; About, Legal and
+Contact carry the rest. Built and not yet launched (noindex, robots disallow-all).
 
 Static Next.js export (the same stack as kirchner.ink, so the review architecture built there
 ports here), hosted on Netlify. No server runtime, no third-party scripts, system fonts only.
@@ -50,7 +51,8 @@ Every push to `main` is a production deploy.
 
 - `public/robots.txt`: replace `Disallow: /` with `Allow: /` and add `Sitemap: https://kirchnervjohnson.com/sitemap.xml`.
 - `app/layout.tsx`: drop `robots: { index: false, follow: false }`.
-- Nothing to swap in: the front page has been the Case Review since 2026-10-06 (the owner's word).
+- The pages are in place (home, review, about, legal, contact); the owner reads the wording of `src/lib/site.ts`, `app/legal/page.tsx`,
+  `app/about/page.tsx` and `app/contact/page.tsx` before launch, and the contact address there is the one to publish.
 
 ## The immunity timeline
 
@@ -61,8 +63,7 @@ adds nothing, and the route answers 404 until the file exists. `npm run validate
 
 ## Case Review — the Studio's window on the site
 
-`/` — the front page — is the case in review mode (`/review`, its path until 2026-10-06, forwards there with the deep
-link carried): the filings listed as the Studio lists them (docket order descending,
+`/review` is the case in review mode (a `?casereview=` deep link on `/` forwards there): the filings listed as the Studio lists them (docket order descending,
 attachments under their main), the document under review on the left, the cited source at its page on the right.
 The window is the Studio's own module, **vendored byte for byte** under `public/casereview/vendor/` and run as a
 native ES module; the site differs in skin alone (`app/review/casereview.css`). The data is the lane as the Studio

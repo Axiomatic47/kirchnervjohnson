@@ -2,7 +2,10 @@
 
 The public site for *Kirchner v. Johnson*, No. 1:25-cv-02735-ACR (D.D.C.). It will host the review
 architecture: the filings with every citation linked to its source, on the model built for the books
-on kirchner.ink and lawsofexistence.com. The front page is that review; the site is not yet launched.
+on kirchner.ink and lawsofexistence.com — for evaluation by prospective counsel and for coordination with
+organizations, not for litigating the case in public (owner 2026-10-06). The pages: `/` (home: the purpose, the
+notice, the way in), `/review` (the window), `/about`, `/legal` (notices · terms · privacy · copyright), `/contact`;
+the site's facts and the two sentences every page says are `src/lib/site.ts`. Not yet launched.
 
 - **Stack:** Next.js static export (`out/`), Tailwind, system fonts, no client script beyond the
   theme flag; headers, redirects and the Node version in `netlify.toml`. The same shape as
@@ -29,8 +32,10 @@ on kirchner.ink and lawsofexistence.com. The front page is that review; the site
   hold), fail-closed; the site adds nothing the registry has not said. The served PDFs (`public/uploads/`) are
   sha-gated against the registry and untracked until the owner's hosting decision.
 - pdf.js is the Studio's 4.10.38, pinned in the Studio fixture; the site never installs another build for this page.
-- The window is the front page (`/`, owner's word 2026-10-06); `/review` forwards there with the deep link. The site
-  stays `noindex` until launch; the public mode lives on lawsofexistence.com.
+- The window is at `/review` with the site's nav in its head bar; the front page is `/` (a `?casereview=` state on `/`
+  forwards to the window). The site stays `noindex` until launch; the public mode lives on lawsofexistence.com.
+- **Every page says what the site is for and that every allegation is an allegation** (`SITE.purpose`, `SITE.notice` —
+  the footer, the home page, the notices). Wording changes there are the owner's.
 - Read `docs/CASE_REVIEW_SITE.md` before touching any of it.
 
 ## The immunity timeline (owner's word 2026-10-06: on this site, on kirchner.ink and on lawsofexistence.com)
