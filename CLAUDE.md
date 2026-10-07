@@ -48,7 +48,8 @@ the site's facts and the two sentences every page says are `src/lib/site.ts`. No
 - `src/lib/immunity-timeline.ts` (the shape), `src/lib/immunity-timeline.server.ts`, `scripts/validate-timeline.mjs` (the
   build gate: ids, years, the closed category and kind sets, quote pins, links, `source.book_unit` as `<note>/<seq>`
   beginning with the entry's `book_note`, an older file's comparison cross-references, and no coordination vocabulary in
-  reader-facing text; the rail filters by TYPE and by CATEGORY; the book is TSUP after a key line; a citation links to the
+  reader-facing text; the rail's TYPE and CATEGORY chips SELECT (each row begins at All; several in a row add together; the two rows combine;
+  the selected chips are the filled ones; the selection is the query string `?type=…&category=…`, so a view can be sent); the book is TSUP after a key line; a citation links to the
   book's review page on kirchner.ink at its cited unit when the data names one, the note to the text page), `app/research/immunity-timeline/{TimelineBody,TimelineFilter}.tsx` and
   `timeline.css` are **byte-identical with kirchner.ink's** — a change lands on both (and goes to lawsofexistence.com by
   hand-off); `page.tsx` is this site's shell and `app/_components/Markdown.tsx` its reduced markdown renderer. The book's
