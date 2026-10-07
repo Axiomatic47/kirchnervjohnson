@@ -56,8 +56,9 @@ Every push to `main` is a production deploy.
 
 ## The immunity timeline
 
-`/research/immunity-timeline` sets the actual history of immunity, in all its categories, beside the six-step origin story at
-endqi.org — a proposed correction, shared with Campaign Zero, carried on this site, on kirchner.ink and on lawsofexistence.com.
+`/research/immunity-timeline` is the actual history of immunity, in all its categories, shared outward as the record and
+carried on this site, on kirchner.ink and on lawsofexistence.com, with a filter by type and by category and every citation
+ready to open the book at its cited passage.
 The content is one file, `public/research/immunity-timeline.json`, the same reviewed file on every site; the page renders it and
 adds nothing, and the route answers 404 until the file exists. `npm run validate-timeline` is the build gate.
 

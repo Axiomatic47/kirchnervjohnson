@@ -40,13 +40,16 @@ the site's facts and the two sentences every page says are `src/lib/site.ts`. No
 
 ## The immunity timeline (owner's word 2026-10-06: on this site, on kirchner.ink and on lawsofexistence.com)
 
-- `/research/immunity-timeline` is the actual history of immunity in all its categories beside endqi.org's six-step origin
-  story, shared with Campaign Zero as a proposed correction. ONE content file, `public/research/immunity-timeline.json`,
+- `/research/immunity-timeline` is the actual history of immunity in all its categories, shared outward as the record
+  (owner 2026-10-07: the timeline to share, not a comparison against anyone else's — the comparison block is no longer
+  drawn). ONE content file, `public/research/immunity-timeline.json`,
   the same reviewed file on every site (every fact from the book or a shelf copy; the drafters write it, the sites render
   it, nobody here edits a fact); absent → the route answers 404 and nothing links to it.
 - `src/lib/immunity-timeline.ts` (the shape), `src/lib/immunity-timeline.server.ts`, `scripts/validate-timeline.mjs` (the
-  build gate: ids, years, the closed category set, quote pins, links, the comparison's cross-references, and no
-  coordination vocabulary in reader-facing text), `app/research/immunity-timeline/{TimelineBody,TimelineFilter}.tsx` and
+  build gate: ids, years, the closed category and kind sets, quote pins, links, `source.book_unit` as `<note>/<seq>`
+  beginning with the entry's `book_note`, an older file's comparison cross-references, and no coordination vocabulary in
+  reader-facing text; the rail filters by TYPE and by CATEGORY; the book is TSUP after a key line; a citation links to the
+  book's review page on kirchner.ink at its cited unit when the data names one, the note to the text page), `app/research/immunity-timeline/{TimelineBody,TimelineFilter}.tsx` and
   `timeline.css` are **byte-identical with kirchner.ink's** — a change lands on both (and goes to lawsofexistence.com by
   hand-off); `page.tsx` is this site's shell and `app/_components/Markdown.tsx` its reduced markdown renderer. The book's
   pages are not on this site, so the shell passes the absolute `bookBase` on kirchner.ink.
