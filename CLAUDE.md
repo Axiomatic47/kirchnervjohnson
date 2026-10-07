@@ -52,6 +52,7 @@ the site's facts and the two sentences every page says are `src/lib/site.ts`. No
   the selected chips are the filled ones; the selection is the query string `?type=…&category=…`, so a view can be sent); the book is TSUP after a key line; a citation links to the
   book's review page on kirchner.ink at its cited unit when the data names one, the note to the text page), `app/research/immunity-timeline/{TimelineBody,TimelineFilter}.tsx` and
   `timeline.css` are **byte-identical with kirchner.ink's** — a change lands on both (and goes to lawsofexistence.com by
-  hand-off); `page.tsx` is this site's shell and `app/_components/Markdown.tsx` its reduced markdown renderer. The book's
+  hand-off; a new import name, field, category or kind, palette token or UTILITY CLASS NAME in the module is said to that
+  site by name before the cut, since its scoped sheet maps each by hand); `page.tsx` is this site's shell and `app/_components/Markdown.tsx` its reduced markdown renderer. The book's
   pages are not on this site, so the shell passes the absolute `bookBase` on kirchner.ink.
 
