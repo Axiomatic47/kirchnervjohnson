@@ -1,39 +1,28 @@
-// app/review/page.tsx — the case in review mode: the filings listed at the far left as the Studio lists them (docket
-// order descending, attachments under their main), the document under review on the left, the cited source at its
-// page on the right. The window is the Studio's, vendored (public/casereview/vendor); this page is its host and the
-// one-row head above it. The bundle it reads (public/casereview/data) is the lane as the Studio serves it, published
-// by the registry's word (scripts/import-casereview.mjs).
+// app/review/page.tsx — the window's path until 2026-10-06, kept so every link written while it lived here still opens:
+// the front page is the window now (app/page.tsx), and this page forwards there with the deep link carried whole
+// (?casereview=… and any hash). A static export has no server redirect of its own; the script runs as the page parses,
+// before anything paints, and the link below is the way for a reader without script. A forwarding page is never for the
+// index, launched or not.
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import fs from 'node:fs';
-import path from 'node:path';
-import { CaseReviewMount } from './CaseReviewMount';
-import './casereview.css';
 
 export const metadata: Metadata = {
   title: 'Case Review',
-  description: 'Kirchner v. Johnson, No. 1:25-cv-02735-ACR (D.D.C.): the filings with every citation linked to its source, in two panes.',
   robots: { index: false, follow: false },
 };
 
-type ImportStamp = { default_doc?: string | null; registry_version?: string | null; documents?: number; tables?: number; imported?: string };
+const forward = `(function(){try{location.replace('/'+location.search+location.hash);}catch(e){}})();`;
 
-function readStamp(): ImportStamp {
-  try { return JSON.parse(fs.readFileSync(path.join(process.cwd(), 'public', 'casereview', 'data', '_IMPORT.json'), 'utf8')); }
-  catch { return {}; }
-}
-
-export default function ReviewPage() {
-  const stamp = readStamp();
+export default function ReviewForward() {
   return (
-    <main className="cr-host">
-      <header className="cr-head">
-        <Link href="/" aria-label="kirchnervjohnson.com">kirchnervjohnson.com</Link>
-        <span className="cr-caption">Kirchner <span className="v">v.</span> Johnson</span>
-        <span className="cr-no">No. 1:25-cv-02735-ACR · D.D.C.</span>
-        <span className="cr-mode">Case review</span>
-      </header>
-      <CaseReviewMount defaultDoc={stamp.default_doc ?? null} />
+    <main className="min-h-screen flex items-center">
+      <script dangerouslySetInnerHTML={{ __html: forward }} />
+      <div className="mx-auto max-w-3xl px-6 py-16">
+        <p className="text-xs uppercase tracking-[0.18em] text-muted">Case review</p>
+        <p className="mt-4 text-ink-2">
+          The case review is the front page now — <Link href="/" className="text-accent-ink underline">open it there</Link>.
+        </p>
+      </div>
     </main>
   );
 }

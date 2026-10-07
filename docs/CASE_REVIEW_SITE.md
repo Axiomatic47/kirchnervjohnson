@@ -113,7 +113,8 @@ build with served rows and no files fails the bundle check — by design: nothin
 
 ## What a reader gets
 
-`/review` opens the newest filing with a link table on the left (ECF 77 today; the rule, not the number), the right
+`/` — the front page since the owner's word of 2026-10-06; `/review`, its path before, forwards there with the deep link —
+opens the newest filing with a link table on the left (ECF 77 today; the rule, not the number), the right
 pane empty with its invitation line; the far-left list is the Studio's tree (groups; mains ECF 77 … 1 descending;
 attachments ascending under their main, folded; the filter; collapse-all; the rail; "hide before ECF 47" on). A
 boxed citation opens its source on the right at the cited page with the passage boxed; the right pane says what it
@@ -133,13 +134,15 @@ most four locked at their document and page by "lock to tab bar" in the pane's m
 reviewer explores from the left, and one exploring tab, rightmost, that every link opens into. The bar is remembered in the
 browser per case, never in the data; the deep link's `right=` names the exploring tab as before.
 
-The site's own `/` stays the under-construction page until the owner's word; `/review` is `noindex` with the site.
+The under-construction page came down on the owner's word (2026-10-06): the window is the front page, and the site stays
+`noindex` (the layout) with `robots.txt` disallowing all until launch. A build without the served PDFs fails the bundle check,
+so an integrate cannot publish the window before the hosting decision.
 
 ## Verifying a change
 
 1. `npm run build` — typecheck, the vendor check, the bundle check, the export.
 2. `npx serve out -l 4999 --no-clipboard` (a private port; the Studio's pinned 3400/3401 are never used by hand) and
-   open `http://127.0.0.1:4999/review`; `curl -I http://127.0.0.1:4999/api/casereview/docs` must answer JSON, the
+   open `http://127.0.0.1:4999/`; `curl -I http://127.0.0.1:4999/api/casereview/docs` must answer JSON, the
    file route a PDF with `206` on a Range request.
 3. Offscreen: the Studio's `tools/ui_snap/snap` against the page with a state strip in the prep script (canvases
    render blank offscreen — assert the tree rows, the boxes and the footer words, not pixels).

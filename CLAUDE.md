@@ -2,7 +2,7 @@
 
 The public site for *Kirchner v. Johnson*, No. 1:25-cv-02735-ACR (D.D.C.). It will host the review
 architecture: the filings with every citation linked to its source, on the model built for the books
-on kirchner.ink and lawsofexistence.com. Today: an under-construction page.
+on kirchner.ink and lawsofexistence.com. The front page is that review; the site is not yet launched.
 
 - **Stack:** Next.js static export (`out/`), Tailwind, system fonts, no client script beyond the
   theme flag; headers, redirects and the Node version in `netlify.toml`. The same shape as
@@ -15,8 +15,8 @@ on kirchner.ink and lawsofexistence.com. Today: an under-construction page.
   Review lane (`work_station/1_DCC…/_admin/case_review/` — docs.json + `links/LINKS_<DOC>.tsv`) by
   an importer, never by hand; the site never edits a lane file. Nothing sealed is ever published.
 - **Voice:** the site speaks as its author. No coordination vocabulary on any page a reader sees.
-- Under construction: `robots.txt` disallows all and the layout sets `noindex`; both flip at launch
-  (README).
+- Not launched: `robots.txt` disallows all and the layout sets `noindex`; both flip at launch (README). The
+  under-construction page came down on the owner's word (2026-10-06): what the site shows is what it deploys.
 
 ## Case Review (owner's word 2026-10-01: the site differs from the Studio in skin, not in logic)
 
@@ -29,5 +29,6 @@ on kirchner.ink and lawsofexistence.com. Today: an under-construction page.
   hold), fail-closed; the site adds nothing the registry has not said. The served PDFs (`public/uploads/`) are
   sha-gated against the registry and untracked until the owner's hosting decision.
 - pdf.js is the Studio's 4.10.38, pinned in the Studio fixture; the site never installs another build for this page.
-- `/review` is `noindex` and unlinked from `/` until the owner's word; the public mode lives on lawsofexistence.com.
+- The window is the front page (`/`, owner's word 2026-10-06); `/review` forwards there with the deep link. The site
+  stays `noindex` until launch; the public mode lives on lawsofexistence.com.
 - Read `docs/CASE_REVIEW_SITE.md` before touching any of it.

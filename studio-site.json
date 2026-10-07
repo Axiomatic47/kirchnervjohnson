@@ -33,7 +33,7 @@
     "BROWSER": "none",
     "NEXT_TELEMETRY_DISABLED": "1"
   },
-  "notes": "Static Next export (output: 'export'), the same shape as kirchner.ink. STATIC is the mode for local development here: `npm run build` typechecks and exports into out/, then `serve` (a devDependency, so npx resolves it offline) serves out/ on 3401 with clean URLs and byte ranges (the PDF viewers of the review architecture range-load). Under construction: one page, robots disallow-all and noindex until launch. No env file, no backend, nothing Netlify-only yet; the SAMEORIGIN/CSP headers in netlify.toml apply only on Netlify. `pages` (read by the Studio's DEVICES run): nothing excluded yet, nothing heavy yet.",
+  "notes": "Static Next export (output: 'export'), the same shape as kirchner.ink. STATIC is the mode for local development here: `npm run build` typechecks and exports into out/, then `serve` (a devDependency, so npx resolves it offline) serves out/ on 3401 with clean URLs and byte ranges (the PDF viewers of the review architecture range-load). Not launched: robots disallow-all and noindex until launch; the front page is the Case Review window (owner's word 2026-10-06), /review forwards to it. No env file, no backend, nothing Netlify-only yet; the SAMEORIGIN/CSP headers in netlify.toml apply only on Netlify. `pages` (read by the Studio's DEVICES run): nothing excluded; the front page carries the window and its PDFs.",
   "pages": {
     "exclude": [],
     "heavy": []

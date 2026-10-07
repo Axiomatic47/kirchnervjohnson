@@ -1,4 +1,4 @@
-# Under construction: nothing is for the index yet. At launch: "Allow: /" and a Sitemap line,
+# Not launched: nothing is for the index yet. At launch: "Allow: /" and a Sitemap line,
 # and drop robots.index=false in app/layout.tsx.
 User-agent: *
 Disallow: /

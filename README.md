@@ -1,7 +1,8 @@
 # kirchnervjohnson.com
 
 *Kirchner v. Johnson*, No. 1:25-cv-02735-ACR (D.D.C.). The site will carry the filings in the case
-with every citation linked to the source it cites. Today it is an under-construction page.
+with every citation linked to the source it cites. The front page is that review; the site is built and not yet
+launched (noindex, robots disallow-all).
 
 Static Next.js export (the same stack as kirchner.ink, so the review architecture built there
 ports here), hosted on Netlify. No server runtime, no third-party scripts, system fonts only.
@@ -49,11 +50,12 @@ Every push to `main` is a production deploy.
 
 - `public/robots.txt`: replace `Disallow: /` with `Allow: /` and add `Sitemap: https://kirchnervjohnson.com/sitemap.xml`.
 - `app/layout.tsx`: drop `robots: { index: false, follow: false }`.
-- Replace the under-construction page.
+- Nothing to swap in: the front page has been the Case Review since 2026-10-06 (the owner's word).
 
 ## Case Review — the Studio's window on the site
 
-`/review` is the case in review mode: the filings listed as the Studio lists them (docket order descending,
+`/` — the front page — is the case in review mode (`/review`, its path until 2026-10-06, forwards there with the deep
+link carried): the filings listed as the Studio lists them (docket order descending,
 attachments under their main), the document under review on the left, the cited source at its page on the right.
 The window is the Studio's own module, **vendored byte for byte** under `public/casereview/vendor/` and run as a
 native ES module; the site differs in skin alone (`app/review/casereview.css`). The data is the lane as the Studio

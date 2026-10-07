@@ -1,39 +1,39 @@
-// The under-construction page. One static page, no client script: what the site is, and what it
-// will carry when it opens.
+// app/page.tsx — the front page IS the case in review mode (owner's word 2026-10-06: the under-construction page comes
+// down; what the site shows is what it deploys). The filings are listed at the far left as the Studio lists them (docket
+// order descending, attachments under their main), the document under review on the left, the cited source at its page
+// on the right. The window is the Studio's, vendored (public/casereview/vendor); this page is its host and the one-row
+// head above it. The bundle it reads (public/casereview/data) is the lane as the Studio serves it, published by the
+// registry's word (scripts/import-casereview.mjs). /review, the window's path before today, forwards here with its deep link.
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import fs from 'node:fs';
+import path from 'node:path';
+import { CaseReviewMount } from './review/CaseReviewMount';
+import './review/casereview.css';
+
+export const metadata: Metadata = {
+  description: 'Kirchner v. Johnson, No. 1:25-cv-02735-ACR (D.D.C.): the filings with every citation linked to its source, in two panes.',
+  // noindex rides the layout — the one flag to drop at launch, with public/robots.txt (README)
+};
+
+type ImportStamp = { default_doc?: string | null; registry_version?: string | null; documents?: number; tables?: number; imported?: string };
+
+function readStamp(): ImportStamp {
+  try { return JSON.parse(fs.readFileSync(path.join(process.cwd(), 'public', 'casereview', 'data', '_IMPORT.json'), 'utf8')); }
+  catch { return {}; }
+}
+
 export default function Home() {
+  const stamp = readStamp();
   return (
-    <main className="min-h-screen flex flex-col">
-      <header className="border-b border-rule">
-        <div className="mx-auto max-w-3xl px-6 py-5 flex items-baseline justify-between gap-6">
-          <span className="font-serif text-lg tracking-wide">Kirchner <span className="text-muted">v.</span> Johnson</span>
-          <span className="text-xs uppercase tracking-[0.18em] text-muted">Under construction</span>
-        </div>
+    <main className="cr-host">
+      <header className="cr-head">
+        <Link href="/" aria-label="kirchnervjohnson.com">kirchnervjohnson.com</Link>
+        <span className="cr-caption">Kirchner <span className="v">v.</span> Johnson</span>
+        <span className="cr-no">No. 1:25-cv-02735-ACR · D.D.C.</span>
+        <span className="cr-mode">Case review</span>
       </header>
-
-      <section className="flex-1">
-        <div className="mx-auto max-w-3xl px-6 py-16 sm:py-24">
-          <p className="text-xs uppercase tracking-[0.18em] text-accent-ink">United States District Court for the District of Columbia</p>
-          <h1 className="mt-4 font-serif text-4xl sm:text-5xl leading-tight">
-            Kirchner <span className="text-muted">v.</span> Johnson
-          </h1>
-          <p className="mt-2 font-serif text-lg text-muted">No. 1:25-cv-02735-ACR</p>
-
-          <div className="mt-10 h-px w-16 bg-accent" />
-
-          <p className="mt-8 max-w-prose text-lg leading-relaxed">
-            This site is under construction.
-          </p>
-          <p className="mt-4 max-w-prose leading-relaxed text-ink-2">
-            When it opens it will carry the filings in the case with every citation linked to the
-            source it cites — the exhibit page, the docket entry, the opinion, the statute — so that a
-            reader can check the record page by page.
-          </p>
-        </div>
-      </section>
-
-      <footer className="border-t border-rule">
-        <div className="mx-auto max-w-3xl px-6 py-5 text-xs text-muted">kirchnervjohnson.com</div>
-      </footer>
+      <CaseReviewMount defaultDoc={stamp.default_doc ?? null} />
     </main>
   );
 }
