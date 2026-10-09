@@ -100,6 +100,22 @@ warnings, coverage, stale render, `k`, `unit_id`, pdf pages, section-map resolut
 reads as two-column, which the window's miss wording reads when its own gutter read finds nothing) ride unchanged. The five
 filings the court has not stamped (ECF 11, 12, 12-1, 14, 15) carry `filer_copy` and the mark in their title.
 
+**P95 — the dropped-ligature class (the checker half at Studio 66eea8d4 / fixed at 361cd2f9 as P95a, the viewer half at fc13e4ae — the pair's sha this site vendored and exported at, 2026-10-09):** the Court's PDFs from about 2013–2014 map ﬁ/ﬂ/ﬃ to a single
+'f' in the file's own font map, so the text layer reads 'confrmed' where the print reads 'confirmed'. The checker measures it as a
+document fact and the export ships it as data: on the docs payload `ligature_drop` (bool) and `ligature_drop_density` (dictionary-
+repairable f-forms per 1,000 words of the store the oracles read) — both named in `DOC_KEEP`, so the bundle's docs.json is the
+Studio's shape (18 documents flagged at v0.25m); on every row that has a target document `target_ligature_drop` (true only when the
+target is flagged; null on the unquoted rows, as `target_columns` is), which rides through the row deny-list untouched; and the
+passage's `retry` gains the label "g" (dropped ligatures, document-level) — the passage is dropped here, so that label never reaches
+a reader. The window's retry (g) keys on the ROW field alone, never on the docs payload, so the vendored window behaves the same in
+the Studio and on the sites whether or not a site carries the two doc keys; the viewer half of P95 (the retry ladder in
+`casereview_core.js`) is in the window vendored at fc13e4ae, and fires on no served row until the drafters re-cut their quotes to the
+print's spelling (a168bcf6's compare over the 64 flagged rows: line-identical before and after). `casereview:sync` refuses while the Studio's vendored sources carry uncommitted
+changes (another seat's half in the shared checkout): the window is vendored from blobs at a commit, never from a working tree. When the
+shared checkout's HEAD has moved past the sha a sync is ordered at, point the sync and the export at a throw-away worktree of that sha
+(`STUDIO_DIR=<worktree> npm run casereview:sync`; the export run from the worktree) — the record then names the ordered commit and the
+harness runs there; remove the worktree after.
+
 **A host policy** (`--serve-groups Filings[,…]`, lawsofexistence.com's addition, 2026-10-01): the registry's `serve` is the
 lane's word on what MAY be published; which groups a site actually hosts is the owner's hosting decision per site. A
 serve row outside the listed groups is not hosted there — `link` when the registry names an http(s) `publish_url`, else
