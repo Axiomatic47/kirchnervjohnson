@@ -116,6 +116,17 @@ shared checkout's HEAD has moved past the sha a sync is ordered at, point the sy
 (`STUDIO_DIR=<worktree> npm run casereview:sync`; the export run from the worktree) — the record then names the ordered commit and the
 harness runs there; remove the worktree after.
 
+**P96 — a page map's basis (Studio abb223ae checker / 4472dc69 viewer, the pair's sha this site vendored and exported at, 2026-10-09):**
+a hand page map's value means one of two things. `leaf` (every map to date, and every offset document implicitly): folio → the leaf it is
+on. `begins` (a reprint such as the Marbury U.S. Reports cut, where one original page spans several leaves): folio → the leaf where it
+BEGINS, and both readers widen a pin's span to [begins(f), begins(f+1)] — the successor when the map has it, the leaf count only when f
+is the map's last key, a gap inside the map closing at the folio's own leaf. The export serves `pagemap_basis` on EVERY document of
+docs.json (an explicit `leaf` where the registry carries nothing), and the window's `targetPages` keys on it, so the token is REQUIRED
+in `DOC_KEEP` — a site whose importer dropped it would read every `begins` map as `leaf` and widen no span while the Studio does, the
+divergence the port forbids. No row key, no stamp key. The landing report counts the served documents carrying `begins` against the
+registry's (1 at v0.25n, the Marbury cut, keyed by the admins at work_station 05be6c24 while this site's first P96 export ran —
+the export refused the moved lane, as built, and ran again).
+
 **A host policy** (`--serve-groups Filings[,…]`, lawsofexistence.com's addition, 2026-10-01): the registry's `serve` is the
 lane's word on what MAY be published; which groups a site actually hosts is the owner's hosting decision per site. A
 serve row outside the listed groups is not hosted there — `link` when the registry names an http(s) `publish_url`, else
