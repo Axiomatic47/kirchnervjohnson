@@ -72,6 +72,7 @@ prints it beside the record's commit).
 # the export (ourstudio 3436c4c7, checker P86): the lane's served JSON to disk — docs.json, links/<id>.json, files.json, _EXPORT.json
 cd ~/Git/ourstudio && env -u PYTHONPATH python3 -m ourstudio_frontend.filing.case_review export \
   /Users/everest/Git/work_station/1_DCC_1-25-cv-02735-ACR <out_dir> [--force]     # ~60 s; refuses a lane that moves during the run
+node scripts/casereview-size-guard.mjs --from <out_dir>   # refuses a `serve` row whose file is over 95 MB — GitHub refuses a file over 100 MB on push (no LFS here, and Netlify would not resolve LFS pointers); such a row is the registry's `link` + publish_url, never a quiet drop (the 1920 Biennial Report scan, 197 MB, 2026-10-10)
 node scripts/import-casereview.mjs --from <out_dir>   # the bundle from the export (the stamp carries the export's lane signature and checker)
 npm run casereview:import                             # the same bundle from the Studio API when it runs (byte-identical: measured 29/29 files)
 node scripts/import-casereview.mjs --check            # every build: the bundle is whole, every served file present and the registry's

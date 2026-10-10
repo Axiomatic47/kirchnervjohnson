@@ -30,7 +30,7 @@ the site's facts and the two sentences every page says are `src/lib/site.ts`. No
 - The bundle under `public/casereview/data/` is written by `scripts/import-casereview.mjs` from the Studio's API or the
   checker's export — **never hand-edited**. Publication is the registry's per-row `publish` field (serve | link |
   hold), fail-closed; the site adds nothing the registry has not said. The served PDFs (`public/uploads/`) are
-  sha-gated against the registry and untracked until the owner's hosting decision.
+  sha-gated against the registry and untracked until the owner's hosting decision. A SIZE GUARD runs on every export before the import (`scripts/casereview-size-guard.mjs --from <export>`, site-only tooling, the same bytes on the three sites but the host's name): it measures every `serve` row's file at the export stamp's case root and refuses one over 95 MB — GitHub refuses a file over 100 MB on push, these repos carry no LFS; such a row is answered by the registry's `link` + publish_url, never dropped here (2026-10-10: the 1920 Biennial Report scan, 197 MB, refused by GitHub's hook after every other gate had passed).
 - pdf.js is the Studio's 4.10.38, pinned in the Studio fixture; the site never installs another build for this page.
 - The window is at `/review` with the site's nav in its head bar; the front page is `/` (a `?casereview=` state on `/`
   forwards to the window). The site stays `noindex` until launch; the public mode lives on lawsofexistence.com.
