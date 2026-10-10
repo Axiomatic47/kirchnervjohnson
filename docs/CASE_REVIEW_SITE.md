@@ -135,6 +135,14 @@ serve row outside the listed groups is not hosted there — `link` when the regi
 Without the flag every serve row is hosted. The `_redirects` rules are written as a marked block (`# casereview BEGIN …
 END`) merged into the file, so a host whose `_redirects` carries other generated rules keeps them. One importer, both sites.
 
+Since 2026-10-10 (the owner's word that Kirchner I comes off kirchner.ink, landed there as a host policy): a link table is
+the document's own content, so the importer writes a table only for a document served on the host — a held or linked id
+leaves `docs.links`, the withheld ids are stamped in `_IMPORT.json.tables_withheld`, and the check refuses a withheld
+table that is present; a `--serve-groups` name that matches no registry group string is refused in words (the names must
+equal the registry's strings exactly); `host_policy` in the stamp names the groups held as well as served; and a held row
+carries the host's reason as `publish_note`, which the window says in brackets. No host policy runs on this site and every
+DDC table is on a served document, so nothing served here changes — the rule rides because the importer is one file.
+
 **P97 — the second case root and the D. Minn. stamp (Studio a90e40ec, the pair's sha this site vendored and exported at, 2026-10-09 22:4x):** the window synced from a detached worktree at a90e40ec (the shared checkout's HEAD had moved on to P97c), the bundle re-exported there: registry v0.25o carries the window's hide-before default as `nav.hide_before` (47 here; the importer passes the registry's `nav` through by name), the checker label P97. Measured by the dry-run compare: files, rewrites and the documents unchanged; six tables moved by the lane's own 26 re-cut rows between v0.25n and v0.25o; P97 itself moved no DDC row (the exports at 5d048462 and a90e40ec are byte-equal). The deferred P96a stamp is taken by this sync. The same floor as lawsofexistence.com and kirchner.ink; P97c (the Studio's local two-case picker, viewer-only) rides the next sync.
 
 **P97c — the local two-case picker (Studio e779a953, 2026-10-09 22:5x; viewer-only, label P97 kept):** the window names its lane (`mountCaseReview({ root, case })`, the Studio's `case`; a `#crCase` select on two or more lanes) — on a site mounting one bundle per slug the lanes fetch is swallowed and no picker shows; the mount passes `{ root }` as before. Synced from a detached worktree with the harness run there; the bundle re-stamped from the same P97 export, no row moved. The three sites share this window commit.
